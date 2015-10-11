@@ -1,0 +1,483 @@
+
+	[
+    {
+        "cardType": "couplet",
+		"cardId" : 1,
+		"choiceOneText" : "Insect with wings",
+		"choiceOneChild" : 2,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "Insect without wings ",
+		"choiceTwoChild" : 26,
+		"choiceTwoImage" : "placeholder2.png"
+    },
+    {
+        "cardType": "couplet",
+		"cardId" : 2,
+		"choiceOneText" : "Front wings hardened, leathery, or parchmentlike, at least at the base",
+		"choiceOneChild" : 3,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "Front wings membranous ",
+		"choiceTwoChild" : 8,
+		"choiceTwoImage" : "placeholder2.png"
+    },	
+    {
+        "cardType": "couplet",
+		"cardId" : 3,
+		"choiceOneText" : "chewing mouthparts",
+		"choiceOneChild" : 4,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "sucking mouthparts",
+		"choiceTwoChild" : 5,
+		"choiceTwoImage" : "placeholder2.png"
+    },	    
+    {
+        "cardType": "couplet",
+		"cardId" : 4,
+		"choiceOneText" : "without pincer-like cerci",
+		"choiceOneChild" : 6,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "with pincer-like cerci",
+		"choiceTwoChild" : "dermaptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 5,
+		"choiceOneText" : "front wings leathery at base and membranous at end",
+		"choiceOneChild" : "hemiptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "Front wings uniform texture",
+		"choiceTwoChild" : "homoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 6,
+		"choiceOneText" : "front wings with branched veins",
+		"choiceOneChild" : 7,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "front wings hard, without veins",
+		"choiceTwoChild" : "coleoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 7,
+		"choiceOneText" : "Jumping insects: Hind femur enlarged, tarsi with four or fewer segments ",
+		"choiceOneChild" : "orthoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "walking insects: Hind femur not enlarged, tarsi with five segments ",
+		"choiceTwoChild" : "dictyoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 8,
+		"choiceOneText" : "Two wings",
+		"choiceOneChild" : 9,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "four wings",
+		"choiceTwoChild" : 10,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 9,
+		"choiceOneText" : "pronotum extended over abdomen",
+		"choiceOneChild" : "orthoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "pronotum extended over abdomen",
+		"choiceTwoChild" : 12,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 10,
+		"choiceOneText" : "wings with few or no scales, no coiled proboscis",
+		"choiceOneChild" : 11,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "wings covered with scales, moutparts consist of coiled probiscis",
+		"choiceTwoChild" : "lepidoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 11,
+		"choiceOneText" : "very slender wing with fringe of hairs as long as the wing is wide",
+		"choiceOneChild" : "thysanoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "no fringe of hairs, or if fringe is present, hairs not as long as the wing is wide",
+		"choiceTwoChild" : 15,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 12,
+		"choiceOneText" : "end of abdomen without noticable appendages",
+		"choiceOneChild" : 13,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "end of abdomen with style or thread-like tail",
+		"choiceTwoChild" : 14,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 13,
+		"choiceOneText" : "haltere-like organs infront of wings",
+		"choiceOneChild" : "coleoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "halteres behind wings",
+		"choiceTwoChild" : "diptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 14,
+		"choiceOneText" : "style-like tail",
+		"choiceOneChild" : "homoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "two or three thread-like tails",
+		"choiceTwoChild" : "ephemeroptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 15,
+		"choiceOneText" : "hind wings equal to or larger than front wings ",
+		"choiceOneChild" : 20,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "hind wings smaller than front wings",
+		"choiceTwoChild" : 16,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 16,
+		"choiceOneText" : "no long abdominal appendages",
+		"choiceOneChild" : 17,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "abdomen with two or three thread-like tails",
+		"choiceTwoChild" : "ephemeroptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 17,
+		"choiceOneText" : "tarsi two or three-segmented",
+		"choiceOneChild" : 18,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "tarsi with more than three segments (usually 5)",
+		"choiceTwoChild" : 19,
+		"choiceTwoImage" : "placeholder2.png"		
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 18,
+		"choiceOneText" : "piercing-sucking mouthparts",
+		"choiceOneChild" : "homoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "chewing mouthparts",
+		"choiceTwoChild" : "psocoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 19,
+		"choiceOneText" : "antennae shorter than body. no noticable scales",
+		"choiceOneChild" : "hymenoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : " antennae as long as body, wings and body often with scales",
+		"choiceTwoChild" : "trichoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 20,
+		"choiceOneText" : "Mouthparts close to eye",
+		"choiceOneChild" : 21,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "mouthparts at end of beak-like structure some distance from eye",
+		"choiceTwoChild" : "mecoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 21,
+		"choiceOneText" : "wings never held flat over abdomen",
+		"choiceOneChild" : 22,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "wings held flat over abdomen",
+		"choiceTwoChild" : 24,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 22,
+		"choiceOneText" : "bristle-like inconspicuous antennae",
+		"choiceOneChild" : "odonata",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "antennae apparently with several segments",
+		"choiceTwoChild" : 23,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 23,
+		"choiceOneText" : "hind wings with enlarged anal area folded fan-like. wings tend to curl around the body lengthwise",
+		"choiceOneChild" : "megaloptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : " hind wings without enlarged anal area folded fan-like. wings to dont tend to curl around the body lengthwise ",
+		"choiceTwoChild" : "neuroptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 24,
+		"choiceOneText" : "all legs of walking type",
+		"choiceOneChild" : 25,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "hind legs modified for jumping",
+		"choiceTwoChild" : "orthoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 25,
+		"choiceOneText" : "cerci usually long, more than 8 segments ",
+		"choiceOneChild" : "plecoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "cerci short with two to 8 segments",
+		"choiceTwoChild" : "isoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 26,
+		"choiceOneText" : "antennae present",
+		"choiceOneChild" : 29,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "antennae absent",
+		"choiceTwoChild" : 27,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 27,
+		"choiceOneText" : "legs present",
+		"choiceOneChild" : "diptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "legs absent",
+		"choiceTwoChild" : 28,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 28,
+		"choiceOneText" : "head and thorax separate",
+		"choiceOneChild" : "homoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : " head and thorax fused",
+		"choiceTwoChild" : "coleoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 29,
+		"choiceOneText" : " collphore present, spring-like organ usually present",
+		"choiceOneChild" : "collembola",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "both collophore and spring-like organ absent",
+		"choiceTwoChild" : 30,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 30,
+		"choiceOneText" : "long tail-like appendages absent",
+		"choiceOneChild" : 31,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "long tail-like appendages present",
+		"choiceTwoChild" : "thysanura",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 31,
+		"choiceOneText" : "body not flattened",
+		"choiceOneChild" : 38,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "body flattened laterally or dorsoventrally",
+		"choiceTwoChild" : 32,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 32,
+		"choiceOneText" : "body flattened dorsoventrally",
+		"choiceOneChild" : 33,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "body flattened laterally",
+		"choiceTwoChild" : "siphonaptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 33,
+		"choiceOneText" : "sucking mouthparts externally visible",
+		"choiceOneChild" : 34,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "no sucking mouthparts externally visible",
+		"choiceTwoChild" : 35,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 34,
+		"choiceOneText" : "antennae longer than head",
+		"choiceOneChild" : "hemiptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "antennae shorter than head",
+		"choiceTwoChild" : "diptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 35,
+		"choiceOneText" : "antennae longer than head",
+		"choiceOneChild" : 36,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "antennae shorter than head",
+		"choiceTwoChild" : 37,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 36,
+		"choiceOneText" : "tiny insects, tarsi with two or three segments",
+		"choiceOneChild" : "psocoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "large insects, tarsi with 5 segments",
+		"choiceTwoChild" : "dictyoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 37,
+		"choiceOneText" : "head wider than thoras at point of attachment to thorax",
+		"choiceOneChild" : "mallophaga",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "head narrower than thorax at point of attachment to thorax",
+		"choiceTwoChild" : "anoplura",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 38,
+		"choiceOneText" : "abdoment and thorax not narrowly joined together",
+		"choiceOneChild" : 39,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "abdoment and thorax narrowly joined together",
+		"choiceTwoChild" : "hymenoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 39,
+		"choiceOneText" : "body covered with scales",
+		"choiceOneChild" : "lepidoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "body not covered with scales",
+		"choiceTwoChild" : 40,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 40,
+		"choiceOneText" : "tarsal claws absent",
+		"choiceOneChild" : "thysanoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "tarsal claws present",
+		"choiceTwoChild" : 41,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 41,
+		"choiceOneText" : "piercing-sucking mouthparts",
+		"choiceOneChild" : 42,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "chewing mouthparts",
+		"choiceTwoChild" : 44,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 42,
+		"choiceOneText" : "cornicles absent",
+		"choiceOneChild" : 43,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "cornicles usually present",
+		"choiceTwoChild" : "homoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 43,
+		"choiceOneText" : "with distinct head and eyes",
+		"choiceOneChild" : "hemiptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "without distinct head and eyes",
+		"choiceTwoChild" : "homoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 44,
+		"choiceOneText" : "abdominal forceps present. entire body hard and brown colored",
+		"choiceOneChild" : "dermaptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "abdominal forceps absent",
+		"choiceTwoChild" : 45,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 45,
+		"choiceOneText" : "mouthparts at end of beak-like structure some distance from eye",
+		"choiceOneChild" : "mecoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "mouthparts not elongated, close to eyes",
+		"choiceTwoChild" : 46,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 46,
+		"choiceOneText" : "cerci present",
+		"choiceOneChild" : 48,
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "cerci absent",
+		"choiceTwoChild" : 47,
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 47,
+		"choiceOneText" : "antennae longer than one-third of the body length",
+		"choiceOneChild" : "psocoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "antennae shorter than one-fourth of the body length",
+		"choiceTwoChild" : "coleoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    },		
+    {
+        "cardType": "couplet",
+		"cardId" : 48,
+		"choiceOneText" : "body leathery and usually grey or dark colored",
+		"choiceOneChild" : "orthoptera",
+		"chiceOneImage" : "placeholder.png",
+		"choiceTwoText" : "body soft and pale colored. 3-5 tarsal segments. basal segment of front tarsi about same size as ones immediately following",
+		"choiceTwoChild" : "isoptera",
+		"choiceTwoImage" : "placeholder2.png"
+    }
+]

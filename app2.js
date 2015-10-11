@@ -1,9 +1,23 @@
+var gInsectCardJson;
+var gOrderJson;
+
+$.getJSON( "data/insectCards.json", function( json ) {
+  console.log( "JSON Data: " + json[0].cardType );
+ });
+ 
+ $.getJSON( "data/orderData.json", function( json ) {
+  console.log( "JSON Data: " + json[0].cardType );
+ });
+
+
 $( document ).ready(function() {
  var audio = new Audio();
  audio.src = "audio/beep.wav";
    var buttonx = 85;
    var buttonw = 125;
    var buttonh = 30;
+   
+   
    
   // -----------------------------button 1-----------------------------------------
   $('#my_canvas').drawRect({
