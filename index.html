@@ -1,16 +1,27 @@
 <html>
 <head>
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="jcanvas.js"></script>
 <link rel='stylesheet' type='text/css' href='style.css'/>
+
+    <!-- Responsive and mobile friendly stuff -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+<style type="text/css">
+body{ background:black; }
+#my_canvas, #light_canvas{ background:black; 
+border:#999 1px solid; }
+
+}
+</style>
 </head>
 <body>
-        <div id="container">
-            <center>
-        <canvas id="my_canvas" height="640" widht="960" style="border:1px solid #c3c3c3;">
-            Your browser does not support the HTML5 canvas tag. 
-        </canvas>
-                <script type='text/javascript' src='app.js'></script>
-        </center>
-        </div>
+<div id="cont">
+<canvas id="my_canvas" width="1000px" height="300px"></canvas>
+
+<h2 id="status"></h2>
+</div>
+                <script type='text/javascript' src='app2.js'></script>
 </body>  
 </html>

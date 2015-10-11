@@ -1,17 +1,18 @@
 
 
-function writeMessage(canvas, message) {
+function writeMessage(canvas, message, clickmessage) {
         var context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.font = '18pt Calibri';
         context.fillStyle = 'black';
         context.fillText(message, 0, 400);
+        context.fillText(clickmessage, 0, 500);
 
 
 var c = document.getElementById("my_canvas");
 var ctx = c.getContext("2d");
 ctx.fillStyle = "#FF0000";
-ctx.fillRect(0,0,150,75);
+ctx.fillRect(200,50,50,50);
 
 var c = document.getElementById("my_canvas");
 var ctx = c.getContext("2d");
@@ -37,16 +38,23 @@ function getMousePos(canvas, evt) {
 function doMouseDown(event) {
     canvas_x = event.pageX;
     canvas_y = event.pageY;
-    alert("X=" + canvas_x + "Y=" + canvas_y)
+    clickmessage = ("You clicked: X=" + canvas_x + " Y=" + canvas_y)
+    writeMessage(canvas,message,clickmessage)
+    if (canvas_x >= 650 && canvas_x <= 700 && canvas_y >= 60 && canvas_y <= 108) {
+        alert("You clicked it");
+}
 }
 
 var canvas = document.getElementById('my_canvas');
 var context = canvas.getContext('2d');
+var clickmessage = "You clicked: "
+var message = "Mouse position: " 
+
 
 canvas.addEventListener('mousemove', function(evt) {
         var mousePos = getMousePos(canvas, evt);
         var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
-        writeMessage(canvas, message);
+        writeMessage(canvas, message,clickmessage);
       }, false);
 
 canvas.addEventListener("mousedown", doMouseDown, false);
