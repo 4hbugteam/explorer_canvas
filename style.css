@@ -1,0 +1,12 @@
+#container {
+    left: 200px;
+    height: 900px;
+    width: 800px;
+    position: fixed;
+    border-size: 5px;
+    border-color: black;
+}
+
+h1 {
+    color: blue;
+}
