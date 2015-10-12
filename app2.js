@@ -1,3 +1,15 @@
+var gInsectCardJson;
+var gOrderJson;
+
+$.getJSON( "data/insectCards.json", function( json ) {
+  console.log( "JSON Data: " + json[0].cardType );
+ });
+ 
+ $.getJSON( "data/orderData.json", function( json ) {
+  console.log( "JSON Data: " + json[0].cardType );
+ });
+
+
 $( document ).ready(function() {
   //var audio = new Audio();
   //audio.src = "audio/beep.wav";
@@ -129,6 +141,7 @@ $( document ).ready(function() {
     }
   };
    
+
   var draw_button = function (hashOptions) {
     var canvas = hashOptions.getItem('canvas');
     var buttonName = hashOptions.getItem('buttonName');
@@ -155,7 +168,7 @@ $( document ).ready(function() {
       x: buttonX, y: buttonY,
       width: buttonw , height: buttonh,
       cornerRadius: 10,
-    
+  
       //----------------- mouseover-----------------------------
       mouseover: function(layer) {
           $(this).animateLayer(layer, {
