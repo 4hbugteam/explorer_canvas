@@ -1,12 +1,20 @@
+
 #container {
     left: 200px;
     height: 900px;
     width: 800px;
     position: fixed;
-    border-size: 5px;
+    border-width: 5px;
     border-color: black;
 }
 
-h1 {
-    color: blue;
+#console {
+  /* float: right */
+  position: absolute;
+  left: -9999px;
+  border-color: black;
+  border-width: 2px;
+  width: 300px;
+  height: 940px;
 }
+

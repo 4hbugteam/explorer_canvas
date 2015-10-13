@@ -1,22 +1,25 @@
 var gInsectCardJson;
 var gOrderJson;
 
+/*
 $.getJSON( "data/insectCards.json", function( json ) {
-  console.log( "JSON Data: " + json[0].cardType );
+  alert( "JSON Data: " + json[0].cardType );
  });
  
  $.getJSON( "data/orderData.json", function( json ) {
-  console.log( "JSON Data: " + json[0].cardType );
+  alert( "JSON Data: " + json[0].cardType );
  });
-
+*/
 
 $( document ).ready(function() {
   //var audio = new Audio();
   //audio.src = "audio/beep.wav";
   var buttonx = 85;
   var buttonw = 125;
-  var buttonh = 30;
+  var buttonh = 60;
   var canvas = $('#my_canvas');
+  var activeLayers = [];
+
   // hashtable class stolen from http://www.mojavelinux.com/articles/javascript_hashes.html
   function HashTable(obj)
   {
@@ -101,6 +104,9 @@ $( document ).ready(function() {
       };
   }
   
+  // takes the message string and writes to the div specified
+  
+  
   // function to create canvas layers based on key:value parameters
   var create_layer = function (hashOptions) {
     // first parse the hash options
@@ -120,7 +126,7 @@ $( document ).ready(function() {
         canvas.addLayer({
           type: layerType,
           name: layerName,
-          index: 7,
+          index: 1,
           fillStyle: '#000',
           strokeStyle: '#000',
           strokeWidth: 0.4,
@@ -133,7 +139,7 @@ $( document ).ready(function() {
     } else if (layerType === 'image'){
       canvas.addLayer({
           type: layerType,
-          index: 2,
+          index: 0,
           name: layerName,
           source: imageSrc,
           x: startX, y: startY,
@@ -143,6 +149,7 @@ $( document ).ready(function() {
    
 
   var draw_button = function (hashOptions) {
+    write_console("console","I'm inside draw_button()");
     var canvas = hashOptions.getItem('canvas');
     var buttonName = hashOptions.getItem('buttonName');
     var buttonText = hashOptions.getItem('buttonText');
@@ -150,12 +157,7 @@ $( document ).ready(function() {
     var buttonX = hashOptions.getItem('buttonX');
     var buttonY = hashOptions.getItem('buttonY');
     var layers = hashOptions.getItem('layers');
-    // process the layers, create them and make a list of 'to animate' layers
 
-    for (var i = 0, v = layers.values(), len = v.length; i < len; i++) {
-      var layer = v[i];
-      create_layer(layer);
-    }
     var imageLayerName = layerOptions_image.getItem('layerName');
     var slideTextLayerName = layerOptions_text.getItem('layerName');
     canvas.drawRect({
@@ -170,6 +172,7 @@ $( document ).ready(function() {
       cornerRadius: 10,
   
       //----------------- mouseover-----------------------------
+      /*
       mouseover: function(layer) {
           $(this).animateLayer(layer, {
             fillStyle: '#008500', 
@@ -177,17 +180,23 @@ $( document ).ready(function() {
         document.getElementById('status').innerHTML = "Hover text"; 
         canvas.css('cursor','pointer');
       },
+      */
       /* -----------------------------------------------------------------------------------------------------------------
       -------btn1 slide in--------------------------------------------------------------------------------------------------*/
     
-      mousedown: function(layer) {
-
-        //canvas.removeLayer("marsimg").drawLayers();
-        //canvas.removeLayer("marstext").drawLayers();
+      click: function(layer) {
+          // clear out the previous active layers
+          do { 
+            j = activeLayers.splice(0,1); 
+            layer = j.toString();
+              canvas.removeLayer(layer).drawLayers();
+            } while (activeLayers.length !== 0);
 
       // loop through the created layers and animate them
         for (var i = 0, v = layers.values(), len = v.length; i < len; i++) {
+          write_console("console","Creating and Animating: " + v[i]);
           var layer_animate = v[i];
+          create_layer(layer_animate);
           var layerName = layer_animate.getItem('layerName');
           var layerEndX = layer_animate.getItem('endX');
           var layerEndY = layer_animate.getItem('endY');
@@ -195,12 +204,24 @@ $( document ).ready(function() {
           // animate the layer
           canvas.animateLayer(layerName, {
              x: layerEndX, y: layerEndY, // move to
-             scale: 1.5,
-            }, 500);// in this many mS
+             scale: 1,
+             rotate: '+=720',
+            }, 500
+            );// in this many mS
+          // keep track of all the layers we activate
+          activeLayers.push(layerName);
+
+        }
+        // show contents of activeLayers in console
+        if (activeLayers.length > 0) {
+          for (var k = 0; k < activeLayers.length; k++) {
+            write_console("console","Active Layers: " + activeLayers[k]);
+          }
+          write_console("console","------");
         }
 
       }, // end click function 
-   
+   /*
     //-----------------------------Button1 mouseout--------------------------------
       mouseout: function(layer) {
         $(this).animateLayer(layer, {
@@ -208,6 +229,7 @@ $( document ).ready(function() {
           }, 500);
         document.getElementById('status').innerHTML = "Normal text"; 
       },
+    */
     });
     // button text
     canvas.drawText({
@@ -222,15 +244,81 @@ $( document ).ready(function() {
 
                                 
   };
-
+  
+  
+  var option1_image = new HashTable({
+                              canvas:     canvas,
+                              layerName:  'option1_image',
+                              layerType:  'image',
+                              startX:     1500,
+                              startY:     1500,
+                              endX:       150,
+                              endY:       200,
+                              imageSrc:   './doge.jpg'
+  });
+  var option1_text = new HashTable({
+                              canvas:     canvas,
+                              layerName:  'option1_text',
+                              layerType:  'text',
+                              startX:     1500,
+                              startY:     1500,
+                              endX:       150,
+                              endY:       300,
+                              layerText:  "This is option one.",
+  });
+  var option1_button = new HashTable({
+                              canvas:     canvas,
+                              buttonName: 'option1',
+                              buttonText: 'Option 1',
+                              buttonX:    buttonx,
+                              buttonY:    160,
+                              layers:     new HashTable({
+                                            layer1: option1_image,
+                                            layer2: option1_text
+                                          })
+  });
+  
+  var option2_image = new HashTable({
+                              canvas:     canvas,
+                              layerName:  'option2_image',
+                              layerType:  'image',
+                              startX:     1500,
+                              startY:     1500,
+                              endX:       150,
+                              endY:       200,
+                              imageSrc:   './doge.jpg'
+  });
+  var option2_text = new HashTable({
+                              canvas:     canvas,
+                              layerName:  'option2_text',
+                              layerType:  'text',
+                              startX:     1500,
+                              startY:     1500,
+                              endX:       150,
+                              endY:       300,
+                              layerText:  "This is option two.",
+  });
+  var option2_button = new HashTable({
+                              canvas:     canvas,
+                              buttonName: 'option2',
+                              buttonText: 'Option 2',
+                              buttonX:    buttonx,
+                              buttonY:    230,
+                              layers:     new HashTable({
+                                            layer1: option2_image,
+                                            layer2: option2_text
+                                          })
+  });
+  
+  
   var layerOptions_image = new HashTable({
                               canvas:     canvas,
                               layerName:  'layer1_image',
                               layerType:  'image',
                               startX:     1500,
                               startY:     1500,
-                              endX:       250,
-                              endY:       700,
+                              endX:       150,
+                              endY:       200,
                               imageSrc:   './bedbug_small.png'
   });
   var layerOptions_text = new HashTable({
@@ -239,8 +327,8 @@ $( document ).ready(function() {
                               layerType:  'text',
                               startX:     1500,
                               startY:     1500,
-                              endX:       250,
-                              endY:       500,
+                              endX:       150,
+                              endY:       300,
                               layerText:  "I'm a func generated layer",
   });
   
@@ -254,12 +342,24 @@ $( document ).ready(function() {
                               buttonName: 'button1',
                               buttonText: 'Button1',
                               buttonX:    buttonx,
-                              buttonY:    90,
+                              buttonY:    80,
                               layers:     layers
   });
   
-  
+  var write_console = function(div,message) {
+    var element = document.getElementById(div);
+    var para = document.createElement("p");
+    var node = document.createTextNode(message);
+    para.appendChild(node);
+    element.appendChild(para);
+    
+  };
+
+write_console("console","hello world");
+
   draw_button(  buttonOptions );
+  draw_button(  option1_button );
+  draw_button(  option2_button );
   
 
 
