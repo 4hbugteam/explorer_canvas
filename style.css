@@ -1,17 +1,18 @@
 
 #container {
-    left: 200px;
-    height: 900px;
-    width: 800px;
-    position: fixed;
+
     border-width: 5px;
     border-color: black;
 }
 
 #console {
-  /* float: right */
+  left: 440px;
+  top: 10px;
+  float: right;
   position: absolute;
+  /*
   left: -9999px;
+  */
   border-color: black;
   border-width: 2px;
   width: 300px;
