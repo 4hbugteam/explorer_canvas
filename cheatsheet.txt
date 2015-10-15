@@ -1,0 +1,22 @@
+
+// move an entire group      
+
+toMove = canvas.getLayerGroup('group01');
+      for (i=0; i < toMove.length; i++) {
+        canvas.animateLayer(toMove[i], {
+        x: '+=400', y: '+=400', // move to
+        scale: 2,
+        }, 1000 );
+      }
+
+
+var cardTemplate = new HashTable({
+                      startX:             rootX,
+                      startY:             rootY,
+                      layerText01:        "This is layerText01.",
+                      layerText02:        "This is layerText02. It can have a lot of text you know.",
+                      layerText03:        "This is layerText03. It can also have a lot of text.",
+                      cardIndexBase:      1,
+                      imageSrcChoiceOne:  'bedbug_small.png',
+                      imageSrcChoiceTwo:  'bedbug_small.png',
+});
