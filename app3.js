@@ -1,10 +1,10 @@
 var baseScale = 1;
 var rootX = 200;
-var rootY = 10;
+var rootY = -60;
 var cardWidth = 250;
 var cardHeight = 300;
 var cardPadding = 50;
-var fontSize = 12;
+var fontSize = 14;
 var fontFamily = 'Arial';
 var fillStyle = '#000';
 var strokeStyle = '#000';
@@ -15,6 +15,7 @@ var fillOrange = '#dd5a16';
 var layerUID = 0;
 var cornerRadius = 15;
 var lastPosition = 0;
+var flipSpeed = 200;
 
 
 var nextUID = function() {
@@ -201,26 +202,49 @@ $( document ).ready(function() {
       
       var animation_click_image = function(layer) {
         canvas.animateLayer(layer, {
-          rotate: '+=720',
-        }, 600);
+          rotate: '+=180',
+        }, flipSpeed);
       };
 
       var animation_click_arrow_up = function(layer) {
         // first we have to create the next layer
         var pos = canvas.getLayer(layer).data.position;
-        write_console('console','Current Position: ' + pos.toString());
-        create_layers_from_json_insect(pos + 1);
+        
         // pull the current layer group
         group = canvas.getLayerGroup(layer.groups[0]);
         // now move the whole group
-        for (k=0; k < group.length; k++) {
-          canvas.animateLayer(group[k], {
+        canvas.animateLayerGroup(group, {
           y: '+=900', // move to
-          }, 1000 );
-        }
+          }, flipSpeed,
+          function() {
+            // wait for finish then clear canvas
+            canvas.removeLayers();            
+            // create the next layer
+            create_layers_from_json_insect(pos + 1);
+          }) ;
         // now redraw the canvas with the new layer
-        canvas.drawLayers();
+        canvas.drawLayers();  
       };
+      
+      var animation_click_arrow_down = function(layer) {
+        // first we have to create the next layer
+        var pos = canvas.getLayer(layer).data.position;
+        
+        // pull the current layer group
+        group = canvas.getLayerGroup(layer.groups[0]);
+        // now move the whole group
+        canvas.animateLayerGroup(group, {
+          y: '-=900', // move to
+          }, flipSpeed,
+          function() {
+            // wait for finish then clear canvas
+            canvas.removeLayers();            
+            // create the next layer
+            create_layers_from_json_insect(pos - 1);
+          }) ;
+        // now redraw the canvas with the new layer
+        canvas.drawLayers();  
+      };  
       
       // function to create couplet card layers based on input hash
       var create_layer_card_couplet = function(groupName,hashOptions) {
@@ -404,12 +428,14 @@ $( document ).ready(function() {
       
       var create_layers_from_json_insect = function(p) {
         var currentY = cardTemplate.getItem('startY');
-        var i = p;
         newCard = clone(cardTemplate);
-        max = jsonInsect.length;
+        max = jsonInsect.length - 1;
         if (p > max) {
           p = 0;
-        }  
+        } else if (p < 0) {
+          p = max;
+        }
+        var i = p;
         currentY = currentY + cardHeight + cardPadding;
         groupName = "couplet_card_" + i.toString();
         // set card properties from the current json object
