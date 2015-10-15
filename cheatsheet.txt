@@ -1,0 +1,10 @@
+
+// move an entire group      
+
+toMove = canvas.getLayerGroup('group01');
+      for (i=0; i < toMove.length; i++) {
+        canvas.animateLayer(toMove[i], {
+        x: '+=400', y: '+=400', // move to
+        scale: 2,
+        }, 1000 );
+      }
