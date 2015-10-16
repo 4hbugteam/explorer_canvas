@@ -1,6 +1,6 @@
-var baseScale = 1;
+var baseScale = 1.2;
 var rootX = 200;
-var rootY = -60;
+var rootY = -90;
 var cardWidth = 250;
 var cardHeight = 300;
 var cardPadding = 50;
@@ -17,6 +17,7 @@ var cornerRadius = 15;
 var lastPosition = 0;
 var flipSpeed = 200;
 
+var jsonInsectMasters = [];
 
 var nextUID = function() {
   layerUID += 1;
@@ -35,6 +36,25 @@ var cardTemplate = new HashTable({
                       choiceOneChild:     'choiceOneChild',
                       choiceTwoChild:     'choiceTwoChild',
                       position:           0,
+                      drawUpArrow:        false,
+                      drawDownArrow:      false,
+                      drawOptOneArrow:    false,
+                      drawOptTwoArrow:    false,
+                      drawLeftArrow:      false,
+                      cardId:             1,
+});
+
+var orderTemplate = new HashTable({
+                      startX:             rootX,
+                      startY:             300,
+                      layerText01:        "This is order layerText01",
+                      layerText02:        "This is order layerText02",
+                      cardIndexBase:      1,
+                      imageSrc:           'feelgood.png',
+                      imageScale:         0.4,
+                      position:           0,
+                      drawLeftArrow:      false,
+                      cardId:             'string',
 });
 
 // function to easily write html p tags to a div
@@ -46,7 +66,8 @@ var write_console = function(div,message) {
   element.appendChild(para);
 };
 
-
+// thanks for this from the SO community wiki:
+//   http://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
 function clone(obj) {
     var copy;
 
@@ -205,7 +226,74 @@ $( document ).ready(function() {
           rotate: '+=180',
         }, flipSpeed);
       };
-
+      
+      var find_master_cards = function(json) {
+        var found;
+        for (i=0; i < json.length; i++) {
+          found = false;
+          search = json[i].cardId;
+          
+          for (j=0; j < json.length; j++) {
+            if (json[j].choiceOneChild === search | json[j].choiceTwoChild === search) {
+              found = true;
+            }
+            if (found) {
+              break;
+            }
+          }
+          if (!found) {
+            jsonInsectMasters.push(json[i]);
+          }
+        }
+      };
+      var find_endpoint_index = function(stringer) {
+        console.log("Searching for orderName string: '" + stringer.toString() + '"');
+        var result = 0;
+        for (r=0;r<jsonOrder.length;r++) {
+          if (stringer === jsonOrder[r].orderName) {
+            result = r;
+            console.log("Found endpoint at index: " + r.toString());
+            break;
+          }
+        }
+        return result;
+      };
+      
+      var find_parent = function(id) {
+        // there will never be a parent in jsonOrder
+        //  so we'll always look in jsonInsect
+        var found = false;
+        var count = 0;
+        var result = 0;
+        console.log("Searching for index with cardId = " + id.toString());
+        for (s=0;s<jsonInsect.length;s++) {
+          if (jsonInsect[s].choiceOneChild.toString() === id || 
+              jsonInsect[s].choiceTwoChild.toString() === id) {
+                result = s;
+                found = true;
+                count += 1;
+              }
+        }
+        console.log("Found result: " + found.toString());
+        console.log("Num of results: " + count.toString());
+        console.log("Parent is index: " + result.toString());
+        console.log("setting target to index '" + result.toString() + "' which is cardId: " + jsonInsect[result].cardId.toString());
+        return result;
+      };
+      
+      var find_child_insect_index = function(childId) {
+        console.log("Searching for index of childId = '" + childId.toString() + "'");
+        var result = 0;
+        for (u=0; u<jsonInsect.length;u++) {
+          if (jsonInsect[u].cardId.toString() === childId) {
+            result = u;
+            console.log('found match of u = ' + u.toString());
+            break;
+          }
+        }
+        return result;
+      };
+      
       var animation_click_arrow_up = function(layer) {
         // first we have to create the next layer
         var pos = canvas.getLayer(layer).data.position;
@@ -244,8 +332,174 @@ $( document ).ready(function() {
           }) ;
         // now redraw the canvas with the new layer
         canvas.drawLayers();  
-      };  
+      };
       
+      var animation_click_arrow_right = function(layer) {
+        // first we have to create the next layer
+        var pos = canvas.getLayer(layer).data.jump;
+        var myPos = canvas.getLayer(layer).data.position;
+        var isEndpoint = false;
+        var endpointPos;
+        console.log("Searching for index of pos = '" + pos.toString() + "'");
+        if (isNaN(pos)) {
+          // means pos is a string
+          endpointPos = find_endpoint_index(pos);
+          isEndpoint = true;
+        } else {
+          insectPos = find_child_insect_index(pos);
+        }
+        // pull the current layer group
+        group = canvas.getLayerGroup(layer.groups[0]);
+        // now move the whole group
+        canvas.animateLayerGroup(group, {
+          x: '-=400', // move to
+          }, flipSpeed,
+          function() {
+            // wait for finish then clear canvas
+            canvas.removeLayers();            
+            // create the next layer
+            if (isEndpoint) {
+              create_layers_from_json_order(endpointPos);
+            } else {
+            create_layers_from_json_insect(insectPos);
+            }
+          }) ;
+        // now redraw the canvas with the new layer
+        canvas.drawLayers();  
+      };
+      
+      var animation_click_arrow_left = function(layer) {
+        // first we have to create the next layer
+        var pos = canvas.getLayer(layer).data.jump;
+        var myPos = canvas.getLayer(layer).data.position;
+        console.log('myPos = ' + myPos.toString());
+        console.log('jumping to ' + pos.toString());
+        var isEndpoint = false;
+        var endpointPos;
+        if (isNaN(pos)) {
+          // means pos is a string
+          endpointPos = find_endpoint_index(pos);
+          isEndpoint = true;
+        }
+        // pull the current layer group
+        group = canvas.getLayerGroup(layer.groups[0]);
+        // now move the whole group
+        canvas.animateLayerGroup(group, {
+          x: '+=400', // move to
+          }, flipSpeed,
+          function() {
+            // wait for finish then clear canvas
+            canvas.removeLayers();            
+            // create the next layer
+            if (isEndpoint) {
+              create_layers_from_json_order(endpointPos);
+            } else {
+            create_layers_from_json_insect(pos);
+            }
+          }) ;
+        // now redraw the canvas with the new layer
+        canvas.drawLayers();  
+      };
+      
+      var create_layer_card_order = function(groupName,hashOptions) {
+        // first parse the hash options
+        var startX = hashOptions.getItem('startX');
+        var startY = hashOptions.getItem('startY');
+        var layerText01 = hashOptions.getItem('layerText01');
+        var layerText02 = hashOptions.getItem('layerText02');
+        var cardIndexBase = hashOptions.getItem('cardIndexBase');
+        var imageSrc = hashOptions.getItem('imageSrc');
+        var imageScale = hashOptions.getItem('imageScale');
+        var position = hashOptions.getItem('position');
+        var drawLeftArrow = hashOptions.getItem('drawLeftArrow');
+        var cardId = hashOptions.getItem('cardId');
+        // draw the container box and box text
+        var idx = cardIndexBase;
+        
+        var nextIndex = function() {
+          return idx += 1;
+        };
+        
+        canvas.addLayer({
+          type: 'rectangle',
+          name: "order_rectangle_" + nextUID().toString(),
+          groups: [groupName],
+          data: {
+            position: position
+          },
+          index: nextIndex(),
+          fillStyle: fillOrange,
+          strokeStyle: strokeStyle,
+          strokeWidth: strokeWidth,
+          x: startX, y: startY,
+          width: cardWidth, height: cardHeight,
+          cornerRadius: cornerRadius,
+        });
+        canvas.addLayer({
+          type: 'text',
+          name: "order_rectangle_text_title_" + nextUID(),
+          groups: [groupName],
+          index: nextIndex(),
+          fillStyle: fillStyle,
+          strokeStyle: strokeStyle,
+          strokeWidth: strokeWidth,
+          x: startX, y: startY - (cardHeight / 3),
+          fontSize: fontSize*2,
+          fontFamily: fontFamily,
+          text: layerText02,
+          maxWidth: cardWidth,
+        });
+        canvas.addLayer({
+          type: 'text',
+          name: "order_rectangle_text_desc_" + nextUID(),
+          groups: [groupName],
+          index: nextIndex(),
+          fillStyle: fillStyle,
+          strokeStyle: strokeStyle,
+          strokeWidth: strokeWidth,
+          x: startX, y: startY - (cardHeight / 5),
+          fontSize: fontSize,
+          fontFamily: fontFamily,
+          text: layerText01,
+          maxWidth: cardWidth,
+        });
+        // now create image layers for choice one and two
+        canvas.addLayer({
+          type: 'image',
+          name: "order_image_choiceOne_" + nextUID(),
+          groups: [groupName],
+          index: nextIndex(),
+          source: imageSrc,
+          x: startX, y: startY + (cardHeight / 6),
+          //scale: baseScale * 0.6,
+          scale: imageScale,
+          click: function(layer) {
+            animation_click_image(layer);
+          }
+        });
+        if (drawLeftArrow) {
+          // draw the back arrow
+          canvas.addLayer({
+            type: 'polygon',
+            name: 'order_arrow_left_' + nextUID(),
+            groups: [groupName],
+            data: {
+              position: position,
+              jump:     find_parent(cardId),
+            },
+            index: nextIndex(),
+            fillStyle: fillGreen,
+            strokeStyle: strokeStyle,
+            x: startX - (cardWidth * 0.6), y: startY,
+            radius: cardPadding / 2,
+            sides: 3,
+            rotate: 180 + 90,
+            click: function(layer) {
+              animation_click_arrow_left(layer);
+            }
+          });
+        }
+      };
       // function to create couplet card layers based on input hash
       var create_layer_card_couplet = function(groupName,hashOptions) {
         // first parse the hash options
@@ -262,6 +516,12 @@ $( document ).ready(function() {
         var choiceOneChild = hashOptions.getItem('choiceOneChild');
         var choiceTwoChild = hashOptions.getItem('choiceTwoChild');
         var position = hashOptions.getItem('position');
+        var drawUpArrow = hashOptions.getItem('drawUpArrow');
+        var drawDownArrow = hashOptions.getItem('drawDownArrow');
+        var drawOptOneArrow = hashOptions.getItem('drawOptOneArrow');
+        var drawOptTwoArrow = hashOptions.getItem('drawOptTwoArrow');
+        var drawLeftArrow = hashOptions.getItem('drawLeftArrow');
+        var cardId = hashOptions.getItem('cardId');
         // draw the container box and box text
         var idx = cardIndexBase;
         
@@ -387,43 +647,127 @@ $( document ).ready(function() {
             animation_click_image(layer);
           }
         });
-        // draw the up arrow
-        canvas.addLayer({
-          type: 'polygon',
-          name: 'couplet_arrow_down_' + nextUID(),
-          groups: [groupName],
-          data: {
-            position: position
-          },
-          index: nextIndex(),
-          fillStyle: fillGreen,
-          strokeStyle: strokeStyle,
-          x: startX, y: startY - (cardHeight - (cardPadding*2)),
-          radius: cardPadding / 2,
-          sides: 3,
-          click: function(layer) {
-            animation_click_arrow_up(layer);
-          }
-        });
-        // draw the down arrow
-        canvas.addLayer({
-          type: 'polygon',
-          name: 'couplet_arrow_down_' + nextUID(),
-          groups: [groupName],
-          data: {
-            position: position
-          },
-          index: nextIndex(),
-          fillStyle: fillGreen,
-          strokeStyle: strokeStyle,
-          x: startX, y: startY + (cardHeight - (cardPadding*2)),
-          radius: cardPadding / 2,
-          sides: 3,
-          rotate: 180,
-          click: function(layer) {
-            animation_click_arrow_down(layer);
-          }
-        });
+        if (drawUpArrow) {
+          // draw the up arrow
+          canvas.addLayer({
+            type: 'polygon',
+            name: 'couplet_arrow_down_' + nextUID(),
+            groups: [groupName],
+            data: {
+              position: position
+            },
+            index: nextIndex(),
+            fillStyle: fillGreen,
+            strokeStyle: strokeStyle,
+            x: startX, y: startY - (cardHeight - (cardPadding*2)),
+            radius: cardPadding / 2,
+            sides: 3,
+            click: function(layer) {
+              animation_click_arrow_up(layer);
+            }
+          });
+        }
+        if (drawDownArrow) {
+          // draw the down arrow
+          canvas.addLayer({
+            type: 'polygon',
+            name: 'couplet_arrow_down_' + nextUID(),
+            groups: [groupName],
+            data: {
+              position: position
+            },
+            index: nextIndex(),
+            fillStyle: fillGreen,
+            strokeStyle: strokeStyle,
+            x: startX, y: startY + (cardHeight - (cardPadding*2)),
+            radius: cardPadding / 2,
+            sides: 3,
+            rotate: 180,
+            click: function(layer) {
+              animation_click_arrow_down(layer);
+            }
+          });
+        }
+        if (drawOptOneArrow) {
+          // draw the optOne right arrow
+          canvas.addLayer({
+            type: 'polygon',
+            name: 'couplet_arrow_right_optOne_' + nextUID(),
+            groups: [groupName],
+            data: {
+              position: position,
+              jump:     choiceOneChild
+            },
+            index: nextIndex(),
+            fillStyle: fillGreen,
+            strokeStyle: strokeStyle,
+            x: startX + (cardWidth * 0.6), y: startY - (cardHeight / 4),
+            radius: cardPadding / 2,
+            sides: 3,
+            rotate: 90,
+            click: function(layer) {
+              animation_click_arrow_right(layer);
+            }
+          });
+        }
+        if (drawOptTwoArrow) {
+          // draw the optTwo right arrow
+          canvas.addLayer({
+            type: 'polygon',
+            name: 'couplet_arrow_right_optTwo_' + nextUID(),
+            groups: [groupName],
+            data: {
+              position: position,
+              jump:     choiceTwoChild,
+            },
+            index: nextIndex(),
+            fillStyle: fillGreen,
+            strokeStyle: strokeStyle,
+            x: startX + (cardWidth * 0.6), y: startY + (cardHeight / 4),
+            radius: cardPadding / 2,
+            sides: 3,
+            rotate: 90,
+            click: function(layer) {
+              animation_click_arrow_right(layer);
+            }
+          });
+        }
+        if (drawLeftArrow) {
+          // draw the optTwo right arrow
+          canvas.addLayer({
+            type: 'polygon',
+            name: 'couplet_arrow_left_' + nextUID(),
+            groups: [groupName],
+            data: {
+              position: position,
+              jump:     find_parent(cardId),
+            },
+            index: nextIndex(),
+            fillStyle: fillGreen,
+            strokeStyle: strokeStyle,
+            x: startX - (cardWidth * 0.6), y: startY,
+            radius: cardPadding / 2,
+            sides: 3,
+            rotate: 180 + 90,
+            click: function(layer) {
+              animation_click_arrow_left(layer);
+            }
+          });
+        }
+      };
+      
+      var create_layers_from_json_order = function(p) {
+        var currentY = orderTemplate.getItem('startY');
+        newOrder = clone(orderTemplate);
+        groupName = "order_card_" + p.toString();
+        max = jsonOrder.length -1;
+        newOrder.setItem('layerText01',      jsonOrder[p].details);
+        //newOrder.setItem('imageSrc',         jsonOrder[p].image);
+        newOrder.setItem('layerText02',      jsonOrder[p].orderName);
+        newOrder.setItem('position',         p);
+        newOrder.setItem('drawLeftArrow',     false); // since can have multiple parents
+        newOrder.setItem('cardId',          jsonOrder[p].orderName);
+        create_layer_card_order(groupName,newOrder);
       };
       
       var create_layers_from_json_insect = function(p) {
@@ -447,6 +791,12 @@ $( document ).ready(function() {
         //newCard.setItem('imageSrcChoiceTwo'.  json[i].choiceTwoImage);
         newCard.setItem('choiceOneChild',     jsonInsect[i].choiceOneChild.toString());
         newCard.setItem('choiceTwoChild',     jsonInsect[i].choiceTwoChild.toString());
+        newCard.setItem('cardId',             jsonInsect[i].cardId.toString());
+        newCard.setItem('drawOptOneArrow',    true);
+        newCard.setItem('drawOptTwoArrow',    true);
+        if (p !== 0) {
+          newCard.setItem('drawLeftArrow',    true);
+        }
         newCard.setItem('position',           p);
         create_layer_card_couplet(groupName,newCard);
 
@@ -457,15 +807,12 @@ $( document ).ready(function() {
       // set the total scale
       set_scale();
       
-      /*
-      anotherCard_2 = clone(cardTemplate);
-      currentY = anotherCard_2.getItem('startY');
-      anotherCard_2.setItem('startY', currentY + cardHeight + cardPadding);
-      groupName = 'group02';
-      create_layer_card_couplet(canvas,groupName,anotherCard_2);
-      */
+
+      find_master_cards(jsonInsect);
+      write_console('console','Length of jsonInsectMasters: ' + jsonInsectMasters.length.toString());
+      write_console('console','jsonInsectMasters[0].cardId = ' + jsonInsectMasters[0].cardId);
       
-      create_layers_from_json_insect(lastPosition);
+      create_layers_from_json_insect(0);
       
       
       
