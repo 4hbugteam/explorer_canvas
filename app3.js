@@ -1,8 +1,8 @@
-var baseScale = 1;
-var rootX = 200;
-var rootY = -60;
-var cardWidth = 250;
-var cardHeight = 300;
+var baseScale = 1.0;
+var rootX = 170;
+var rootY = -160;
+var cardWidth = 220;
+var cardHeight = 400;
 var cardPadding = 50;
 var fontSize = 14;
 var fontFamily = 'Arial';
@@ -15,8 +15,9 @@ var fillOrange = '#dd5a16';
 var layerUID = 0;
 var cornerRadius = 15;
 var lastPosition = 0;
-var flipSpeed = 200;
+var flipSpeed = 100;
 
+var jsonInsectMasters = [];
 
 var nextUID = function() {
   layerUID += 1;
@@ -35,6 +36,23 @@ var cardTemplate = new HashTable({
                       choiceOneChild:     'choiceOneChild',
                       choiceTwoChild:     'choiceTwoChild',
                       position:           0,
+                      drawOptOneArrow:    false,
+                      drawOptTwoArrow:    false,
+                      drawLeftArrow:      false,
+                      cardId:             1,
+});
+
+var orderTemplate = new HashTable({
+                      startX:             rootX,
+                      startY:             300,
+                      layerText01:        "This is order layerText01",
+                      layerText02:        "This is order layerText02",
+                      cardIndexBase:      1,
+                      imageSrc:           'feelgood.png',
+                      imageScale:         0.4,
+                      position:           0,
+                      drawLeftArrow:      false,
+                      cardId:             'string',
 });
 
 // function to easily write html p tags to a div
@@ -46,7 +64,8 @@ var write_console = function(div,message) {
   element.appendChild(para);
 };
 
-
+// thanks for this from the SO community wiki:
+//   http://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
 function clone(obj) {
     var copy;
 
@@ -200,52 +219,354 @@ $( document ).ready(function() {
         fontSize = fontSize * baseScale;
       };
       
+      
+      
       var animation_click_image = function(layer) {
-        canvas.animateLayer(layer, {
-          rotate: '+=180',
-        }, flipSpeed);
-      };
+        g = canvas.getLayerGroup(layer.groups[1]);
+        var layerImage;
+        var layerText;
+        var layerRect;
+        var layerNames = [];
+        
+        var set_invisible_all_but = function (layerListIndices,visibleBool) {
+          // loops through the canvas and all but the
+          // given layer names to invisible. accepts 
+          // a list of layer names.
+          allLayers = canvas.getLayers();
+          var layersToHide = [];
+          for (u=0; u < allLayers.length; u++) {
+            if (layerListIndices.indexOf(allLayers[u].name) === -1 ) {
+              layersToHide.push(allLayers[u]);
+            }
+          }
+          for (j=0;j<layersToHide.length;j++) {
+            canvas.animateLayer(layersToHide[j], {
+              visible: visibleBool,
+            },flipSpeed);
+          } 
 
-      var animation_click_arrow_up = function(layer) {
-        // first we have to create the next layer
-        var pos = canvas.getLayer(layer).data.position;
+        };
         
+        for (f=0;f<g.length;f++) {
+          lName = g[f].name;
+          if (lName.indexOf('image') > -1) {
+            layerNames.push(g[f].name);
+            layerImage = g[f];
+          } else if (lName.indexOf('text') > -1) {
+            layerNames.push(g[f].name);
+            layerText = g[f];
+          } else if (lName.indexOf('rectangle') > -1) {
+            layerNames.push(g[f].name);
+            layerRect = g[f];
+          }
+        }
+        
+        // set all but the pop up layers invisible then callback
+        set_invisible_all_but(layerNames,false);
+        canvas.animateLayer(layerImage, {
+          scale: baseScale*1.1,
+          x: rootX, y: rootY  + cardHeight*1.3,
+        }, flipSpeed);
+        canvas.animateLayer(layerText, {
+          x: rootX, y: rootY + cardHeight*0.8,
+        }, flipSpeed);
+        canvas.animateLayer(layerRect, {
+          width: cardWidth * 1.2,
+          height: cardHeight * 1.1,
+          y: cardHeight * 0.7,
+          shadowColor: '#000',
+          shadowBlur: 60,
+        }, flipSpeed);
+        // get current popup width
+        var popWidth = layerRect.width;
+        var popHeight = layerRect.height;
+        canvas.drawRect({
+          layer: true,
+          name: 'x-button',
+          x: rootX + (popWidth / 2),
+          y: rootY + (cardHeight * 0.6),
+          fillStyle: layerRect.fillStyle,
+          strokeStyle: "#000",
+          strokeWidth: 1,
+          width: popWidth * 0.2,
+          height: popHeight * 0.2,
+          index: layerRect.index + 1,
+          cornerRadius: 10,
+          click: function(layer) {
+            indexToDraw = layerRect.data.position;
+            canvas.removeLayers();
+            create_layers_from_json_insect(indexToDraw);
+            canvas.drawLayers();
+          }
+        },flipSpeed);
+        layerXButton = canvas.getLayer('x-button');
+        canvas.drawText({
+          layer: true,
+          name: 'x-button_text',
+          x: layerXButton.x,
+          y: layerXButton.y,
+          text: 'X',
+          index: layerXButton.index + 1,
+          fontSize: fontSize,
+          fillStyle: '#000',
+        },flipSpeed);
+      };
+      
+      var find_master_cards = function(json) {
+        var found;
+        for (i=0; i < json.length; i++) {
+          found = false;
+          search = json[i].cardId;
+          
+          for (j=0; j < json.length; j++) {
+            if (json[j].choiceOneChild === search | json[j].choiceTwoChild === search) {
+              found = true;
+            }
+            if (found) {
+              break;
+            }
+          }
+          if (!found) {
+            jsonInsectMasters.push(json[i]);
+          }
+        }
+      };
+      var find_endpoint_index = function(stringer) {
+        var result = 0;
+        for (r=0;r<jsonOrder.length;r++) {
+          if (stringer === jsonOrder[r].orderName) {
+            result = r;
+            break;
+          }
+        }
+        return result;
+      };
+      
+      var find_parent = function(id) {
+        // there will never be a parent in jsonOrder
+        //  so we'll always look in jsonInsect
+        var found = false;
+        var count = 0;
+        var result = 0;
+        for (s=0;s<jsonInsect.length;s++) {
+          if (jsonInsect[s].choiceOneChild.toString() === id || 
+              jsonInsect[s].choiceTwoChild.toString() === id) {
+                result = s;
+                found = true;
+                count += 1;
+              }
+        }
+        return result;
+      };
+      
+      var find_child_insect_index = function(childId) {
+        var result = 0;
+        for (u=0; u<jsonInsect.length;u++) {
+          if (jsonInsect[u].cardId.toString() === childId) {
+            result = u;
+            break;
+          }
+        }
+        return result;
+      };
+      
+      
+      var animation_click_arrow_right = function(layer) {
+        // first we have to create the next layer
+        var pos = canvas.getLayer(layer).data.jump;
+        var myPos = canvas.getLayer(layer).data.position;
+        var isEndpoint = false;
+        var endpointPos;
+        if (isNaN(pos)) {
+          // means pos is a string
+          endpointPos = find_endpoint_index(pos);
+          isEndpoint = true;
+        } else {
+          insectPos = find_child_insect_index(pos);
+        }
         // pull the current layer group
         group = canvas.getLayerGroup(layer.groups[0]);
         // now move the whole group
         canvas.animateLayerGroup(group, {
-          y: '+=900', // move to
+          x: '-=400', // move to
           }, flipSpeed,
           function() {
             // wait for finish then clear canvas
             canvas.removeLayers();            
             // create the next layer
-            create_layers_from_json_insect(pos + 1);
+            if (isEndpoint) {
+              create_layers_from_json_order(endpointPos);
+            } else {
+            create_layers_from_json_insect(insectPos);
+            }
           }) ;
         // now redraw the canvas with the new layer
         canvas.drawLayers();  
       };
       
-      var animation_click_arrow_down = function(layer) {
+      var animation_click_arrow_left = function(layer) {
         // first we have to create the next layer
-        var pos = canvas.getLayer(layer).data.position;
-        
+        var pos = canvas.getLayer(layer).data.jump;
+        var myPos = canvas.getLayer(layer).data.position;
+        var isEndpoint = false;
+        var endpointPos;
+        if (isNaN(pos)) {
+          // means pos is a string
+          endpointPos = find_endpoint_index(pos);
+          isEndpoint = true;
+        }
         // pull the current layer group
         group = canvas.getLayerGroup(layer.groups[0]);
         // now move the whole group
         canvas.animateLayerGroup(group, {
-          y: '-=900', // move to
+          x: '+=400', // move to
           }, flipSpeed,
           function() {
             // wait for finish then clear canvas
             canvas.removeLayers();            
             // create the next layer
-            create_layers_from_json_insect(pos - 1);
+            if (isEndpoint) {
+              create_layers_from_json_order(endpointPos);
+            } else {
+            create_layers_from_json_insect(pos);
+            }
           }) ;
         // now redraw the canvas with the new layer
         canvas.drawLayers();  
-      };  
+      };
+      var animation_click_reset = function(layer) {
+        // pull the current layer group
+        group = canvas.getLayerGroup(layer.groups[0]);
+        // now move the whole group
+        canvas.animateLayerGroup(group, {
+          rotate: 360,
+          x: '+=400', // move to
+          }, flipSpeed,
+          function() {
+            // wait for finish then clear canvas
+            canvas.removeLayers();            
+            // create the next layer
+            create_layers_from_json_insect(0);
+          }) ;
+        // now redraw the canvas with the new layer
+        canvas.drawLayers();  
+      };
       
+      var create_layer_card_order = function(groupName,hashOptions) {
+        // first parse the hash options
+        var startX = hashOptions.getItem('startX');
+        var startY = hashOptions.getItem('startY');
+        var layerText01 = hashOptions.getItem('layerText01');
+        var layerText02 = hashOptions.getItem('layerText02');
+        var cardIndexBase = hashOptions.getItem('cardIndexBase');
+        var imageSrc = hashOptions.getItem('imageSrc');
+        var imageScale = hashOptions.getItem('imageScale');
+        var position = hashOptions.getItem('position');
+        var drawLeftArrow = hashOptions.getItem('drawLeftArrow');
+        var cardId = hashOptions.getItem('cardId');
+        // draw the container box and box text
+        var idx = cardIndexBase;
+        
+        var nextIndex = function() {
+          return idx += 1;
+        };
+        
+        canvas.addLayer({
+          type: 'rectangle',
+          name: "order_rectangle_" + nextUID().toString(),
+          groups: [groupName],
+          data: {
+            position: position
+          },
+          index: nextIndex(),
+          fillStyle: fillOrange,
+          strokeStyle: strokeStyle,
+          strokeWidth: strokeWidth,
+          x: startX, y: startY,
+          width: cardWidth, height: cardHeight,
+          cornerRadius: cornerRadius,
+        });
+        canvas.addLayer({
+          type: 'text',
+          name: "order_rectangle_text_title_" + nextUID(),
+          groups: [groupName],
+          index: nextIndex(),
+          fillStyle: fillStyle,
+          strokeStyle: strokeStyle,
+          strokeWidth: strokeWidth,
+          x: startX, y: startY - (cardHeight / 3),
+          fontSize: fontSize*2,
+          fontFamily: fontFamily,
+          text: layerText02,
+          maxWidth: cardWidth,
+        });
+        canvas.addLayer({
+          type: 'text',
+          name: "order_rectangle_text_desc_" + nextUID(),
+          groups: [groupName],
+          index: nextIndex(),
+          fillStyle: fillStyle,
+          strokeStyle: strokeStyle,
+          strokeWidth: strokeWidth,
+          x: startX, y: startY - (cardHeight / 5),
+          fontSize: fontSize,
+          fontFamily: fontFamily,
+          text: layerText01,
+          maxWidth: cardWidth,
+        });
+        // now create image layers for choice one and two
+        canvas.addLayer({
+          type: 'image',
+          name: "order_image_choiceOne_" + nextUID(),
+          groups: [groupName],
+          index: nextIndex(),
+          source: imageSrc,
+          x: startX, y: startY + (cardHeight / 6),
+          //scale: baseScale * 0.6,
+          scale: imageScale,
+          click: function(layer) {
+            animation_click_image(layer);
+          }
+        });
+        if (drawLeftArrow) {
+          // draw the back arrow
+          canvas.addLayer({
+            type: 'polygon',
+            name: 'order_arrow_left_' + nextUID(),
+            groups: [groupName],
+            data: {
+              position: position,
+              jump:     find_parent(cardId),
+            },
+            index: nextIndex(),
+            fillStyle: fillGreen,
+            strokeStyle: strokeStyle,
+            x: startX - (cardWidth * 0.6), y: startY,
+            radius: cardPadding / 2,
+            sides: 3,
+            rotate: 180 + 90,
+            click: function(layer) {
+              animation_click_arrow_left(layer);
+            }
+          });
+        }
+        // make the reset button
+        canvas.addLayer({
+        type: 'polygon',
+        name: 'order_reset_' + nextUID(),
+        groups: [groupName],
+        index: nextIndex(),
+        fillStyle: fillGreen,
+        strokeStyle: strokeStyle,
+        x: startX - (cardWidth / 2), y: startY - (cardHeight / 2),
+        radius: cardPadding / 2,
+        sides: 6,
+        rotate: 180 + 90,
+        click: function(layer) {
+          animation_click_reset(layer);
+        }
+      });
+      };
       // function to create couplet card layers based on input hash
       var create_layer_card_couplet = function(groupName,hashOptions) {
         // first parse the hash options
@@ -262,6 +583,10 @@ $( document ).ready(function() {
         var choiceOneChild = hashOptions.getItem('choiceOneChild');
         var choiceTwoChild = hashOptions.getItem('choiceTwoChild');
         var position = hashOptions.getItem('position');
+        var drawOptOneArrow = hashOptions.getItem('drawOptOneArrow');
+        var drawOptTwoArrow = hashOptions.getItem('drawOptTwoArrow');
+        var drawLeftArrow = hashOptions.getItem('drawLeftArrow');
+        var cardId = hashOptions.getItem('cardId');
         // draw the container box and box text
         var idx = cardIndexBase;
         
@@ -288,6 +613,9 @@ $( document ).ready(function() {
           type: 'text',
           name: "couplet_rectangle_text_" + nextUID(),
           groups: [groupName],
+          data: {
+            position: position
+          },
           index: nextIndex(),
           fillStyle: fillStyle,
           strokeStyle: strokeStyle,
@@ -302,9 +630,10 @@ $( document ).ready(function() {
         canvas.addLayer({
           type: 'rectangle',
           name: "couplet_rectangle_choiceOne_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceOne'],
           data: {
-            child: choiceOneChild
+            child: choiceOneChild,
+            position: position,
           },
           index: nextIndex(),
           fillStyle: fillBlue,
@@ -314,13 +643,17 @@ $( document ).ready(function() {
           width: cardWidth - (cardWidth * 0.1), 
           height: cardHeight - (cardHeight * 0.6),
           cornerRadius: cornerRadius,
+          click: function(layer) {
+            animation_click_image(layer);
+          }
         });
         canvas.addLayer({
           type: 'rectangle',
           name: "couplet_rectangle_choiceTwo_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceTwo'],
           data: {
-            child: choiceTwoChild
+            child: choiceTwoChild,
+            position: position,
           },
           index: nextIndex(),
           fillStyle: fillBlue,
@@ -330,12 +663,18 @@ $( document ).ready(function() {
           width: cardWidth - (cardWidth * 0.1), 
           height: cardHeight - (cardHeight * 0.6),
           cornerRadius: cornerRadius,
+          click: function(layer) {
+            animation_click_image(layer);
+          }
         });
         // draw the two choice text
         canvas.addLayer({
           type: 'text',
           name: "couplet_text_choiceOne_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceOne'],
+          data: {
+            position: position
+          },
           index: nextIndex(),
           fillStyle: fillStyle,
           strokeStyle: strokeStyle,
@@ -350,7 +689,10 @@ $( document ).ready(function() {
         canvas.addLayer({
           type: 'text',
           name: "couplet_text_choiceTwo_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceTwo'],
+          data: {
+            position: position
+          },
           index: nextIndex(),
           fillStyle: fillStyle,
           strokeStyle: strokeStyle,
@@ -366,7 +708,10 @@ $( document ).ready(function() {
         canvas.addLayer({
           type: 'image',
           name: "couplet_image_choiceOne_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceOne'],
+          data: {
+            position: position
+          },
           index: nextIndex(),
           source: imageSrcChoiceOne,
           x: startX + (cardWidth * 0.2), y: startY - (cardHeight / 4),
@@ -378,7 +723,10 @@ $( document ).ready(function() {
         canvas.addLayer({
           type: 'image',
           name: "couplet_image_choiceTwo_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceTwo'],
+          data: {
+            position: position
+          },
           index: nextIndex(),
           source: imageSrcChoiceTwo,
           x: startX + (cardWidth * 0.2), y: startY + (cardHeight / 4),
@@ -387,43 +735,86 @@ $( document ).ready(function() {
             animation_click_image(layer);
           }
         });
-        // draw the up arrow
-        canvas.addLayer({
-          type: 'polygon',
-          name: 'couplet_arrow_down_' + nextUID(),
-          groups: [groupName],
-          data: {
-            position: position
-          },
-          index: nextIndex(),
-          fillStyle: fillGreen,
-          strokeStyle: strokeStyle,
-          x: startX, y: startY - (cardHeight - (cardPadding*2)),
-          radius: cardPadding / 2,
-          sides: 3,
-          click: function(layer) {
-            animation_click_arrow_up(layer);
-          }
-        });
-        // draw the down arrow
-        canvas.addLayer({
-          type: 'polygon',
-          name: 'couplet_arrow_down_' + nextUID(),
-          groups: [groupName],
-          data: {
-            position: position
-          },
-          index: nextIndex(),
-          fillStyle: fillGreen,
-          strokeStyle: strokeStyle,
-          x: startX, y: startY + (cardHeight - (cardPadding*2)),
-          radius: cardPadding / 2,
-          sides: 3,
-          rotate: 180,
-          click: function(layer) {
-            animation_click_arrow_down(layer);
-          }
-        });
+        if (drawOptOneArrow) {
+          // draw the optOne right arrow
+          canvas.addLayer({
+            type: 'polygon',
+            name: 'couplet_arrow_right_optOne_' + nextUID(),
+            groups: [groupName],
+            data: {
+              position: position,
+              jump:     choiceOneChild
+            },
+            index: nextIndex(),
+            fillStyle: fillGreen,
+            strokeStyle: strokeStyle,
+            x: startX + (cardWidth * 0.6), y: startY - (cardHeight / 4),
+            radius: cardPadding / 2,
+            sides: 3,
+            rotate: 90,
+            click: function(layer) {
+              animation_click_arrow_right(layer);
+            }
+          });
+        }
+        if (drawOptTwoArrow) {
+          // draw the optTwo right arrow
+          canvas.addLayer({
+            type: 'polygon',
+            name: 'couplet_arrow_right_optTwo_' + nextUID(),
+            groups: [groupName],
+            data: {
+              position: position,
+              jump:     choiceTwoChild,
+            },
+            index: nextIndex(),
+            fillStyle: fillGreen,
+            strokeStyle: strokeStyle,
+            x: startX + (cardWidth * 0.6), y: startY + (cardHeight / 4),
+            radius: cardPadding / 2,
+            sides: 3,
+            rotate: 90,
+            click: function(layer) {
+              animation_click_arrow_right(layer);
+            }
+          });
+        }
+        if (drawLeftArrow) {
+          // draw the optTwo right arrow
+          canvas.addLayer({
+            type: 'polygon',
+            name: 'couplet_arrow_left_' + nextUID(),
+            groups: [groupName],
+            data: {
+              position: position,
+              jump:     find_parent(cardId),
+            },
+            index: nextIndex(),
+            fillStyle: fillGreen,
+            strokeStyle: strokeStyle,
+            x: startX - (cardWidth * 0.6), y: startY,
+            radius: cardPadding / 2,
+            sides: 3,
+            rotate: 180 + 90,
+            click: function(layer) {
+              animation_click_arrow_left(layer);
+            }
+          });
+        }
+      }; 
+      
+      var create_layers_from_json_order = function(p) {
+        var currentY = orderTemplate.getItem('startY');
+        newOrder = clone(orderTemplate);
+        groupName = "order_card_" + p.toString();
+        max = jsonOrder.length -1;
+        newOrder.setItem('layerText01',      jsonOrder[p].details);
+        //newOrder.setItem('imageSrc',         jsonOrder[p].image);
+        newOrder.setItem('layerText02',      jsonOrder[p].orderName);
+        newOrder.setItem('position',         p);
+        newOrder.setItem('drawLeftArrow',     false); // since can have multiple parents
+        newOrder.setItem('cardId',          jsonOrder[p].orderName);
+        create_layer_card_order(groupName,newOrder);
       };
       
       var create_layers_from_json_insect = function(p) {
@@ -447,6 +838,12 @@ $( document ).ready(function() {
         //newCard.setItem('imageSrcChoiceTwo'.  json[i].choiceTwoImage);
         newCard.setItem('choiceOneChild',     jsonInsect[i].choiceOneChild.toString());
         newCard.setItem('choiceTwoChild',     jsonInsect[i].choiceTwoChild.toString());
+        newCard.setItem('cardId',             jsonInsect[i].cardId.toString());
+        newCard.setItem('drawOptOneArrow',    true);
+        newCard.setItem('drawOptTwoArrow',    true);
+        if (p !== 0) {
+          newCard.setItem('drawLeftArrow',    true);
+        }
         newCard.setItem('position',           p);
         create_layer_card_couplet(groupName,newCard);
 
@@ -457,23 +854,12 @@ $( document ).ready(function() {
       // set the total scale
       set_scale();
       
-      /*
-      anotherCard_2 = clone(cardTemplate);
-      currentY = anotherCard_2.getItem('startY');
-      anotherCard_2.setItem('startY', currentY + cardHeight + cardPadding);
-      groupName = 'group02';
-      create_layer_card_couplet(canvas,groupName,anotherCard_2);
-      */
-      
-      create_layers_from_json_insect(lastPosition);
-      
-      
-      
-      v = canvas.getLayers();
-      for (j=0; j < v.length; j++) {
-        write_console('console','LAYERS: ' + v[j].name + ": " + v[j].data.child);
-      }
+
+      find_master_cards(jsonInsect);
+    
+      create_layers_from_json_insect(0);
       canvas.drawLayers();
+      lays = canvas.getLayers();
       
 
       
