@@ -1,8 +1,8 @@
-var baseScale = 1.2;
-var rootX = 200;
-var rootY = -90;
-var cardWidth = 250;
-var cardHeight = 300;
+var baseScale = 1.0;
+var rootX = 170;
+var rootY = -160;
+var cardWidth = 220;
+var cardHeight = 400;
 var cardPadding = 50;
 var fontSize = 14;
 var fontFamily = 'Arial';
@@ -15,7 +15,7 @@ var fillOrange = '#dd5a16';
 var layerUID = 0;
 var cornerRadius = 15;
 var lastPosition = 0;
-var flipSpeed = 200;
+var flipSpeed = 100;
 
 var jsonInsectMasters = [];
 
@@ -36,8 +36,6 @@ var cardTemplate = new HashTable({
                       choiceOneChild:     'choiceOneChild',
                       choiceTwoChild:     'choiceTwoChild',
                       position:           0,
-                      drawUpArrow:        false,
-                      drawDownArrow:      false,
                       drawOptOneArrow:    false,
                       drawOptTwoArrow:    false,
                       drawLeftArrow:      false,
@@ -221,10 +219,97 @@ $( document ).ready(function() {
         fontSize = fontSize * baseScale;
       };
       
+      
+      
       var animation_click_image = function(layer) {
-        canvas.animateLayer(layer, {
-          rotate: '+=180',
+        g = canvas.getLayerGroup(layer.groups[1]);
+        var layerImage;
+        var layerText;
+        var layerRect;
+        var layerNames = [];
+        
+        var set_invisible_all_but = function (layerListIndices,visibleBool) {
+          // loops through the canvas and all but the
+          // given layer names to invisible. accepts 
+          // a list of layer names.
+          allLayers = canvas.getLayers();
+          var layersToHide = [];
+          for (u=0; u < allLayers.length; u++) {
+            if (layerListIndices.indexOf(allLayers[u].name) === -1 ) {
+              layersToHide.push(allLayers[u]);
+            }
+          }
+          for (j=0;j<layersToHide.length;j++) {
+            canvas.animateLayer(layersToHide[j], {
+              visible: visibleBool,
+            },flipSpeed);
+          } 
+
+        };
+        
+        for (f=0;f<g.length;f++) {
+          lName = g[f].name;
+          if (lName.indexOf('image') > -1) {
+            layerNames.push(g[f].name);
+            layerImage = g[f];
+          } else if (lName.indexOf('text') > -1) {
+            layerNames.push(g[f].name);
+            layerText = g[f];
+          } else if (lName.indexOf('rectangle') > -1) {
+            layerNames.push(g[f].name);
+            layerRect = g[f];
+          }
+        }
+        
+        // set all but the pop up layers invisible then callback
+        set_invisible_all_but(layerNames,false);
+        canvas.animateLayer(layerImage, {
+          scale: baseScale*1.1,
+          x: rootX, y: rootY  + cardHeight*1.3,
         }, flipSpeed);
+        canvas.animateLayer(layerText, {
+          x: rootX, y: rootY + cardHeight*0.8,
+        }, flipSpeed);
+        canvas.animateLayer(layerRect, {
+          width: cardWidth * 1.2,
+          height: cardHeight * 1.1,
+          y: cardHeight * 0.7,
+          shadowColor: '#000',
+          shadowBlur: 60,
+        }, flipSpeed);
+        // get current popup width
+        var popWidth = layerRect.width;
+        var popHeight = layerRect.height;
+        canvas.drawRect({
+          layer: true,
+          name: 'x-button',
+          x: rootX + (popWidth / 2),
+          y: rootY + (cardHeight * 0.6),
+          fillStyle: layerRect.fillStyle,
+          strokeStyle: "#000",
+          strokeWidth: 1,
+          width: popWidth * 0.2,
+          height: popHeight * 0.2,
+          index: layerRect.index + 1,
+          cornerRadius: 10,
+          click: function(layer) {
+            indexToDraw = layerRect.data.position;
+            canvas.removeLayers();
+            create_layers_from_json_insect(indexToDraw);
+            canvas.drawLayers();
+          }
+        },flipSpeed);
+        layerXButton = canvas.getLayer('x-button');
+        canvas.drawText({
+          layer: true,
+          name: 'x-button_text',
+          x: layerXButton.x,
+          y: layerXButton.y,
+          text: 'X',
+          index: layerXButton.index + 1,
+          fontSize: fontSize,
+          fillStyle: '#000',
+        },flipSpeed);
       };
       
       var find_master_cards = function(json) {
@@ -247,12 +332,10 @@ $( document ).ready(function() {
         }
       };
       var find_endpoint_index = function(stringer) {
-        console.log("Searching for orderName string: '" + stringer.toString() + '"');
         var result = 0;
         for (r=0;r<jsonOrder.length;r++) {
           if (stringer === jsonOrder[r].orderName) {
             result = r;
-            console.log("Found endpoint at index: " + r.toString());
             break;
           }
         }
@@ -265,7 +348,6 @@ $( document ).ready(function() {
         var found = false;
         var count = 0;
         var result = 0;
-        console.log("Searching for index with cardId = " + id.toString());
         for (s=0;s<jsonInsect.length;s++) {
           if (jsonInsect[s].choiceOneChild.toString() === id || 
               jsonInsect[s].choiceTwoChild.toString() === id) {
@@ -274,65 +356,20 @@ $( document ).ready(function() {
                 count += 1;
               }
         }
-        console.log("Found result: " + found.toString());
-        console.log("Num of results: " + count.toString());
-        console.log("Parent is index: " + result.toString());
-        console.log("setting target to index '" + result.toString() + "' which is cardId: " + jsonInsect[result].cardId.toString());
         return result;
       };
       
       var find_child_insect_index = function(childId) {
-        console.log("Searching for index of childId = '" + childId.toString() + "'");
         var result = 0;
         for (u=0; u<jsonInsect.length;u++) {
           if (jsonInsect[u].cardId.toString() === childId) {
             result = u;
-            console.log('found match of u = ' + u.toString());
             break;
           }
         }
         return result;
       };
       
-      var animation_click_arrow_up = function(layer) {
-        // first we have to create the next layer
-        var pos = canvas.getLayer(layer).data.position;
-        
-        // pull the current layer group
-        group = canvas.getLayerGroup(layer.groups[0]);
-        // now move the whole group
-        canvas.animateLayerGroup(group, {
-          y: '+=900', // move to
-          }, flipSpeed,
-          function() {
-            // wait for finish then clear canvas
-            canvas.removeLayers();            
-            // create the next layer
-            create_layers_from_json_insect(pos + 1);
-          }) ;
-        // now redraw the canvas with the new layer
-        canvas.drawLayers();  
-      };
-      
-      var animation_click_arrow_down = function(layer) {
-        // first we have to create the next layer
-        var pos = canvas.getLayer(layer).data.position;
-        
-        // pull the current layer group
-        group = canvas.getLayerGroup(layer.groups[0]);
-        // now move the whole group
-        canvas.animateLayerGroup(group, {
-          y: '-=900', // move to
-          }, flipSpeed,
-          function() {
-            // wait for finish then clear canvas
-            canvas.removeLayers();            
-            // create the next layer
-            create_layers_from_json_insect(pos - 1);
-          }) ;
-        // now redraw the canvas with the new layer
-        canvas.drawLayers();  
-      };
       
       var animation_click_arrow_right = function(layer) {
         // first we have to create the next layer
@@ -340,7 +377,6 @@ $( document ).ready(function() {
         var myPos = canvas.getLayer(layer).data.position;
         var isEndpoint = false;
         var endpointPos;
-        console.log("Searching for index of pos = '" + pos.toString() + "'");
         if (isNaN(pos)) {
           // means pos is a string
           endpointPos = find_endpoint_index(pos);
@@ -372,8 +408,6 @@ $( document ).ready(function() {
         // first we have to create the next layer
         var pos = canvas.getLayer(layer).data.jump;
         var myPos = canvas.getLayer(layer).data.position;
-        console.log('myPos = ' + myPos.toString());
-        console.log('jumping to ' + pos.toString());
         var isEndpoint = false;
         var endpointPos;
         if (isNaN(pos)) {
@@ -396,6 +430,23 @@ $( document ).ready(function() {
             } else {
             create_layers_from_json_insect(pos);
             }
+          }) ;
+        // now redraw the canvas with the new layer
+        canvas.drawLayers();  
+      };
+      var animation_click_reset = function(layer) {
+        // pull the current layer group
+        group = canvas.getLayerGroup(layer.groups[0]);
+        // now move the whole group
+        canvas.animateLayerGroup(group, {
+          rotate: 360,
+          x: '+=400', // move to
+          }, flipSpeed,
+          function() {
+            // wait for finish then clear canvas
+            canvas.removeLayers();            
+            // create the next layer
+            create_layers_from_json_insect(0);
           }) ;
         // now redraw the canvas with the new layer
         canvas.drawLayers();  
@@ -499,6 +550,22 @@ $( document ).ready(function() {
             }
           });
         }
+        // make the reset button
+        canvas.addLayer({
+        type: 'polygon',
+        name: 'order_reset_' + nextUID(),
+        groups: [groupName],
+        index: nextIndex(),
+        fillStyle: fillGreen,
+        strokeStyle: strokeStyle,
+        x: startX - (cardWidth / 2), y: startY - (cardHeight / 2),
+        radius: cardPadding / 2,
+        sides: 6,
+        rotate: 180 + 90,
+        click: function(layer) {
+          animation_click_reset(layer);
+        }
+      });
       };
       // function to create couplet card layers based on input hash
       var create_layer_card_couplet = function(groupName,hashOptions) {
@@ -516,8 +583,6 @@ $( document ).ready(function() {
         var choiceOneChild = hashOptions.getItem('choiceOneChild');
         var choiceTwoChild = hashOptions.getItem('choiceTwoChild');
         var position = hashOptions.getItem('position');
-        var drawUpArrow = hashOptions.getItem('drawUpArrow');
-        var drawDownArrow = hashOptions.getItem('drawDownArrow');
         var drawOptOneArrow = hashOptions.getItem('drawOptOneArrow');
         var drawOptTwoArrow = hashOptions.getItem('drawOptTwoArrow');
         var drawLeftArrow = hashOptions.getItem('drawLeftArrow');
@@ -548,6 +613,9 @@ $( document ).ready(function() {
           type: 'text',
           name: "couplet_rectangle_text_" + nextUID(),
           groups: [groupName],
+          data: {
+            position: position
+          },
           index: nextIndex(),
           fillStyle: fillStyle,
           strokeStyle: strokeStyle,
@@ -562,9 +630,10 @@ $( document ).ready(function() {
         canvas.addLayer({
           type: 'rectangle',
           name: "couplet_rectangle_choiceOne_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceOne'],
           data: {
-            child: choiceOneChild
+            child: choiceOneChild,
+            position: position,
           },
           index: nextIndex(),
           fillStyle: fillBlue,
@@ -574,13 +643,17 @@ $( document ).ready(function() {
           width: cardWidth - (cardWidth * 0.1), 
           height: cardHeight - (cardHeight * 0.6),
           cornerRadius: cornerRadius,
+          click: function(layer) {
+            animation_click_image(layer);
+          }
         });
         canvas.addLayer({
           type: 'rectangle',
           name: "couplet_rectangle_choiceTwo_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceTwo'],
           data: {
-            child: choiceTwoChild
+            child: choiceTwoChild,
+            position: position,
           },
           index: nextIndex(),
           fillStyle: fillBlue,
@@ -590,12 +663,18 @@ $( document ).ready(function() {
           width: cardWidth - (cardWidth * 0.1), 
           height: cardHeight - (cardHeight * 0.6),
           cornerRadius: cornerRadius,
+          click: function(layer) {
+            animation_click_image(layer);
+          }
         });
         // draw the two choice text
         canvas.addLayer({
           type: 'text',
           name: "couplet_text_choiceOne_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceOne'],
+          data: {
+            position: position
+          },
           index: nextIndex(),
           fillStyle: fillStyle,
           strokeStyle: strokeStyle,
@@ -610,7 +689,10 @@ $( document ).ready(function() {
         canvas.addLayer({
           type: 'text',
           name: "couplet_text_choiceTwo_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceTwo'],
+          data: {
+            position: position
+          },
           index: nextIndex(),
           fillStyle: fillStyle,
           strokeStyle: strokeStyle,
@@ -626,7 +708,10 @@ $( document ).ready(function() {
         canvas.addLayer({
           type: 'image',
           name: "couplet_image_choiceOne_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceOne'],
+          data: {
+            position: position
+          },
           index: nextIndex(),
           source: imageSrcChoiceOne,
           x: startX + (cardWidth * 0.2), y: startY - (cardHeight / 4),
@@ -638,7 +723,10 @@ $( document ).ready(function() {
         canvas.addLayer({
           type: 'image',
           name: "couplet_image_choiceTwo_" + nextUID(),
-          groups: [groupName],
+          groups: [groupName,'_choiceTwo'],
+          data: {
+            position: position
+          },
           index: nextIndex(),
           source: imageSrcChoiceTwo,
           x: startX + (cardWidth * 0.2), y: startY + (cardHeight / 4),
@@ -647,47 +735,6 @@ $( document ).ready(function() {
             animation_click_image(layer);
           }
         });
-        if (drawUpArrow) {
-          // draw the up arrow
-          canvas.addLayer({
-            type: 'polygon',
-            name: 'couplet_arrow_down_' + nextUID(),
-            groups: [groupName],
-            data: {
-              position: position
-            },
-            index: nextIndex(),
-            fillStyle: fillGreen,
-            strokeStyle: strokeStyle,
-            x: startX, y: startY - (cardHeight - (cardPadding*2)),
-            radius: cardPadding / 2,
-            sides: 3,
-            click: function(layer) {
-              animation_click_arrow_up(layer);
-            }
-          });
-        }
-        if (drawDownArrow) {
-          // draw the down arrow
-          canvas.addLayer({
-            type: 'polygon',
-            name: 'couplet_arrow_down_' + nextUID(),
-            groups: [groupName],
-            data: {
-              position: position
-            },
-            index: nextIndex(),
-            fillStyle: fillGreen,
-            strokeStyle: strokeStyle,
-            x: startX, y: startY + (cardHeight - (cardPadding*2)),
-            radius: cardPadding / 2,
-            sides: 3,
-            rotate: 180,
-            click: function(layer) {
-              animation_click_arrow_down(layer);
-            }
-          });
-        }
         if (drawOptOneArrow) {
           // draw the optOne right arrow
           canvas.addLayer({
@@ -754,7 +801,7 @@ $( document ).ready(function() {
             }
           });
         }
-      };
+      }; 
       
       var create_layers_from_json_order = function(p) {
         var currentY = orderTemplate.getItem('startY');
@@ -809,18 +856,10 @@ $( document ).ready(function() {
       
 
       find_master_cards(jsonInsect);
-      write_console('console','Length of jsonInsectMasters: ' + jsonInsectMasters.length.toString());
-      write_console('console','jsonInsectMasters[0].cardId = ' + jsonInsectMasters[0].cardId);
-      
+    
       create_layers_from_json_insect(0);
-      
-      
-      
-      v = canvas.getLayers();
-      for (j=0; j < v.length; j++) {
-        write_console('console','LAYERS: ' + v[j].name + ": " + v[j].data.child);
-      }
       canvas.drawLayers();
+      lays = canvas.getLayers();
       
 
       

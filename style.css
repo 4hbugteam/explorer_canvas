@@ -5,15 +5,17 @@
     border-color: black;
 }
 
+/*
 #console {
-  left: 440px;
+  /* left: 440px; 
   top: 10px;
   float: right;
   position: absolute;
-  /* left: -9999px; */
+  left: -9999px;
   border-color: black;
   border-width: 2px;
   width: 300px;
   height: 940px;
 }
 
+*/
