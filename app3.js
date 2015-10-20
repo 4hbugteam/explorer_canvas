@@ -1,59 +1,13 @@
-var baseScale = 1.0;
-var rootX = 170;
-var rootY = -160;
-var cardWidth = 220;
-var cardHeight = 400;
-var cardPadding = 50;
-var fontSize = 14;
-var fontFamily = 'Arial';
-var fillStyle = '#000';
-var strokeStyle = '#000';
-var strokeWidth = 0.4;
-var fillGreen = '#117050';
-var fillBlue = '#abcdef';
-var fillOrange = '#dd5a16';
-var layerUID = 0;
-var cornerRadius = 15;
-var lastPosition = 0;
-var flipSpeed = 100;
+
 
 var jsonInsectMasters = [];
-
+var layerUID = 0;
 var nextUID = function() {
   layerUID += 1;
   return layerUID.toString();
 };
 
-var cardTemplate = new HashTable({
-                      startX:             rootX,
-                      startY:             rootY,
-                      layerText01:        "This is layerText01.",
-                      layerText02:        "This is layerText02. It can have a lot of text you know.",
-                      layerText03:        "This is layerText03. It can also have a lot of text.",
-                      cardIndexBase:      1,
-                      imageSrcChoiceOne:  'bedbug_small.png',
-                      imageSrcChoiceTwo:  'bedbug_small.png',
-                      choiceOneChild:     'choiceOneChild',
-                      choiceTwoChild:     'choiceTwoChild',
-                      position:           0,
-                      drawOptOneArrow:    false,
-                      drawOptTwoArrow:    false,
-                      drawLeftArrow:      false,
-                      cardId:             1,
-});
 
-var orderTemplate = new HashTable({
-                      startX:             rootX,
-                      startY:             300,
-                      layerText01:        "This is order layerText01",
-                      layerText02:        "This is order layerText02",
-                      cardIndexBase:      1,
-                      imageSrc:           'feelgood.png',
-                      imageScale:         0.4,
-                      position:           0,
-                      drawLeftArrow:      false,
-                      cardId:             'string',
-});
 
 // function to easily write html p tags to a div
 var write_console = function(div,message) {
@@ -202,24 +156,187 @@ function HashTable(obj)
 
 
 $( document ).ready(function() {
+  var canvas_other = document.getElementById("my_canvas");
   var canvas = $('#my_canvas');
-
+  canvas_other.height = window.innerHeight - (window.innerHeight * 0.03);
+  canvas_other.width = window.innerWidth - (window.innerWidth * 0.03);
   //var audio = new Audio();
   //audio.src = "audio/beep.wav";
-
+  
+  var baseScale = canvas_other.height / 300;
+  var rootX = canvas_other.width / 2;
+  var rootY = canvas_other.height * -0.35;
+  var cardWidth = canvas_other.width * 0.60;
+  var cardHeight = canvas_other.height * 0.8;
+  //var rootX = 180;
+  //var rootY = -160;
+  //var cardHeight = 220;
+  //var cardWidth = 200;
+  var cardPadding = cardHeight / 8;
+  var triangleSize = cardPadding * 0.4;
+  var trianglePadding = cardWidth * 0.55;
+  var fontSize = cardHeight / 40 ;
+  var fontFamily = 'Arial';
+  var fillStyle = '#000';
+  var strokeStyle = '#000';
+  var strokeWidth = 0.4;
+  var fillGreen = '#117050';
+  var fillBlue = '#abcdef';
+  var fillOrange = '#dd5a16';
+  var fillRed = '#ffccaa';
+  var cornerRadius = 15;
+  var lastPosition = 0;
+  var flipSpeed = 100;
+  var menuToggled = false;  
+  
+  
+  var cardTemplate = new HashTable({
+                        startX:             rootX,
+                        startY:             rootY,
+                        layerText01:        "This is layerText01.",
+                        layerText02:        "This is layerText02. It can have a lot of text you know.",
+                        layerText03:        "This is layerText03. It can also have a lot of text.",
+                        cardIndexBase:      1,
+                        imageSrcChoiceOne:  'bedbug_small.png',
+                        imageSrcChoiceTwo:  'bedbug_small.png',
+                        choiceOneChild:     'choiceOneChild',
+                        choiceTwoChild:     'choiceTwoChild',
+                        position:           0,
+                        drawOptOneArrow:    false,
+                        drawOptTwoArrow:    false,
+                        drawLeftArrow:      false,
+                        cardId:             1,
+  });
+  
+  var orderTemplate = new HashTable({
+                        startX:             rootX,
+                        startY:             rootY * -1.6,
+                        layerText01:        "This is order layerText01",
+                        layerText02:        "This is order layerText02",
+                        cardIndexBase:      1,
+                        imageSrc:           'feelgood.png',
+                        imageScale:         1,
+                        position:           0,
+                        drawLeftArrow:      false,
+                        cardId:             'string',
+  });
   
   get_json_order(function(jsonOrder) {
     get_json_insect(function(jsonInsect) {
       // ALL CODE GOES HERE
-      
       var set_scale = function() {
-        cardWidth = cardWidth * baseScale ;
-        cardHeight = cardHeight * baseScale;
-        cardPadding = cardPadding * baseScale;
-        fontSize = fontSize * baseScale;
+        //cardWidth = cardWidth * baseScale ;
+        //cardHeight = cardHeight * baseScale;
+        //cardPadding = cardPadding * baseScale;
+        fontSize = fontSize * (baseScale * 0.5);
       };
       
+      var pre_draw = function() {
+        // this function will be run every time you 
+        // want to drawLayers so we can inject things
+        // like the menu.
+        console.log('Running pre_draw()....');
+        draw_menus();
+        canvas.drawLayers();
+      };
       
+      var draw_menus = function() {
+        // pull height of current canvas
+        var menuBoxHeight = canvas.height();
+        var menuBoxWidth = canvas.width();
+        var menuBoxClosedWidth = menuBoxWidth * 0.2;
+        var menuBoxOpenWidth = menuBoxClosedWidth * 4;
+        var menuBoxButtonOpenPosX = menuBoxOpenWidth - (menuBoxOpenWidth * 0.57);
+        var menuBoxButtonClosedPosX = menuBoxClosedWidth * 0.25;
+        var move_menu_button = function(layer) {
+          var box = canvas.getLayer('menu_box');
+          var lines = canvas.getLayerGroup('menu_button_lines');
+          var button = canvas.getLayer('menu_box_button');
+          if (!(menuToggled)) {
+            menuToggled = !menuToggled;
+            canvas.animateLayer(box, {
+              width: menuBoxOpenWidth,  
+            }, flipSpeed);
+            canvas.animateLayer(button, {
+              x: menuBoxButtonOpenPosX,  
+            }, flipSpeed);
+            canvas.animateLayerGroup(lines, {
+              x1: menuBoxButtonOpenPosX + (menuBoxWidth * 0.08 * 0.4),
+              x2: menuBoxButtonOpenPosX - (menuBoxWidth * 0.08 * 0.4),
+            }, flipSpeed);
+            
+          } else {
+            menuToggled = !menuToggled;
+            canvas.animateLayer(box, {
+              width: menuBoxClosedWidth,  
+            }, flipSpeed);
+            canvas.animateLayer(button, {
+              x: menuBoxButtonClosedPosX,  
+            }, flipSpeed);
+            canvas.animateLayerGroup(lines, {
+              x1: menuBoxButtonClosedPosX + (menuBoxWidth * 0.08 * 0.4),
+              x2: menuBoxButtonClosedPosX - (menuBoxWidth * 0.08 * 0.4),
+            }, flipSpeed);
+            
+          }
+        };
+        var draw_menu_lines = function(startX) {
+          var menuButton = canvas.getLayer('menu_box_button');
+          var menuBoxLinesPosX1 = startX + (menuButton.width * 0.4);
+          var menuBoxLinesPosX2 = startX - (menuButton.width * 0.4);
+          // grab the menubox button's dimensions
+          
+          var menuButtonLineYs = [];
+          menuButtonLineYs.push(menuButton.y - (menuButton.height * 0.25));
+          menuButtonLineYs.push(menuButton.y);
+          menuButtonLineYs.push(menuButton.y + (menuButton.height * 0.25));
+          for (g=0; g < menuButtonLineYs.length; g++) {
+            canvas.drawLine({
+              layer: true,
+              name: 'menu_box_button_line_' + g.toString(),
+              groups: ['menu_button_lines'],
+              strokeStyle: '#000',
+              x1: menuBoxLinesPosX1,
+              x2: menuBoxLinesPosX2,
+              y1: menuButtonLineYs[g],
+              y2: menuButtonLineYs[g], 
+            });
+          }
+          canvas.setLayerGroup('menu_button_lines', {
+            click: function(layer) {
+              move_menu_button(layer);
+            }
+          });
+
+        };
+        canvas.drawRect({
+          layer: true,
+          name: 'menu_box',
+          fillStyle: fillRed,
+          width: menuBoxClosedWidth,
+          height: menuBoxHeight,
+          x: 0, y: menuBoxHeight / 2,
+          shadowBlur: 5,
+          shadowColor: '#000',
+          });
+        canvas.drawRect({
+          layer: true,
+          name: 'menu_box_button',
+          opacity: 0.02,
+          strokeStyle: '#000000',
+          transparent: true,
+          width: menuBoxWidth * 0.08,
+          height: menuBoxHeight * 0.06,
+          x: menuBoxButtonClosedPosX,
+          y: menuBoxHeight * 0.05,
+          cornerRadius: cornerRadius / 4,
+          click: function(layer) {
+            move_menu_button(layer);
+          }
+          
+        });
+        draw_menu_lines(menuBoxButtonClosedPosX);
+      };
       
       var animation_click_image = function(layer) {
         g = canvas.getLayerGroup(layer.groups[1]);
@@ -263,6 +380,7 @@ $( document ).ready(function() {
         
         // set all but the pop up layers invisible then callback
         set_invisible_all_but(layerNames,false);
+        
         canvas.animateLayer(layerImage, {
           scale: baseScale*1.1,
           x: rootX, y: rootY  + cardHeight*1.3,
@@ -272,11 +390,12 @@ $( document ).ready(function() {
         }, flipSpeed);
         canvas.animateLayer(layerRect, {
           width: cardWidth * 1.2,
-          height: cardHeight * 1.1,
+          height: cardHeight * 1.04,
           y: cardHeight * 0.7,
           shadowColor: '#000',
           shadowBlur: 60,
         }, flipSpeed);
+        
         // get current popup width
         var popWidth = layerRect.width;
         var popHeight = layerRect.height;
@@ -294,9 +413,10 @@ $( document ).ready(function() {
           cornerRadius: 10,
           click: function(layer) {
             indexToDraw = layerRect.data.position;
+            console.log("Removing all layers..");
             canvas.removeLayers();
             create_layers_from_json_insect(indexToDraw);
-            canvas.drawLayers();
+            pre_draw();
           }
         },flipSpeed);
         layerXButton = canvas.getLayer('x-button');
@@ -392,6 +512,7 @@ $( document ).ready(function() {
           }, flipSpeed,
           function() {
             // wait for finish then clear canvas
+            console.log("Removing all layers..");
             canvas.removeLayers();            
             // create the next layer
             if (isEndpoint) {
@@ -399,9 +520,11 @@ $( document ).ready(function() {
             } else {
             create_layers_from_json_insect(insectPos);
             }
+            // now redraw the canvas with the new layer
+            pre_draw();
           }) ;
-        // now redraw the canvas with the new layer
-        canvas.drawLayers();  
+        
+        
       };
       
       var animation_click_arrow_left = function(layer) {
@@ -423,6 +546,7 @@ $( document ).ready(function() {
           }, flipSpeed,
           function() {
             // wait for finish then clear canvas
+            console.log("Removing all layers..");
             canvas.removeLayers();            
             // create the next layer
             if (isEndpoint) {
@@ -430,9 +554,9 @@ $( document ).ready(function() {
             } else {
             create_layers_from_json_insect(pos);
             }
+            // now redraw the canvas with the new layer
+            pre_draw();  
           }) ;
-        // now redraw the canvas with the new layer
-        canvas.drawLayers();  
       };
       var animation_click_reset = function(layer) {
         // pull the current layer group
@@ -444,12 +568,14 @@ $( document ).ready(function() {
           }, flipSpeed,
           function() {
             // wait for finish then clear canvas
+            console.log("Removing all layers..");
             canvas.removeLayers();            
             // create the next layer
             create_layers_from_json_insect(0);
+            // now redraw the canvas with the new layer
+            pre_draw();
           }) ;
-        // now redraw the canvas with the new layer
-        canvas.drawLayers();  
+        
       };
       
       var create_layer_card_order = function(groupName,hashOptions) {
@@ -541,8 +667,8 @@ $( document ).ready(function() {
             index: nextIndex(),
             fillStyle: fillGreen,
             strokeStyle: strokeStyle,
-            x: startX - (cardWidth * 0.6), y: startY,
-            radius: cardPadding / 2,
+            x: startX - (trianglePadding), y: startY,
+            radius: triangleSize,
             sides: 3,
             rotate: 180 + 90,
             click: function(layer) {
@@ -559,7 +685,7 @@ $( document ).ready(function() {
         fillStyle: fillGreen,
         strokeStyle: strokeStyle,
         x: startX - (cardWidth / 2), y: startY - (cardHeight / 2),
-        radius: cardPadding / 2,
+        radius: triangleSize,
         sides: 6,
         rotate: 180 + 90,
         click: function(layer) {
@@ -715,7 +841,7 @@ $( document ).ready(function() {
           index: nextIndex(),
           source: imageSrcChoiceOne,
           x: startX + (cardWidth * 0.2), y: startY - (cardHeight / 4),
-          scale: baseScale * 0.6,
+          scale: baseScale * 0.44,
           click: function(layer) {
             animation_click_image(layer);
           }
@@ -730,7 +856,7 @@ $( document ).ready(function() {
           index: nextIndex(),
           source: imageSrcChoiceTwo,
           x: startX + (cardWidth * 0.2), y: startY + (cardHeight / 4),
-          scale: baseScale * 0.6,
+          scale: baseScale * 0.44,
           click: function(layer) {
             animation_click_image(layer);
           }
@@ -748,8 +874,8 @@ $( document ).ready(function() {
             index: nextIndex(),
             fillStyle: fillGreen,
             strokeStyle: strokeStyle,
-            x: startX + (cardWidth * 0.6), y: startY - (cardHeight / 4),
-            radius: cardPadding / 2,
+            x: startX + (trianglePadding), y: startY - (cardHeight / 4),
+            radius: triangleSize,
             sides: 3,
             rotate: 90,
             click: function(layer) {
@@ -770,8 +896,8 @@ $( document ).ready(function() {
             index: nextIndex(),
             fillStyle: fillGreen,
             strokeStyle: strokeStyle,
-            x: startX + (cardWidth * 0.6), y: startY + (cardHeight / 4),
-            radius: cardPadding / 2,
+            x: startX + (trianglePadding), y: startY + (cardHeight / 4),
+            radius: triangleSize,
             sides: 3,
             rotate: 90,
             click: function(layer) {
@@ -792,8 +918,8 @@ $( document ).ready(function() {
             index: nextIndex(),
             fillStyle: fillGreen,
             strokeStyle: strokeStyle,
-            x: startX - (cardWidth * 0.6), y: startY,
-            radius: cardPadding / 2,
+            x: startX - (trianglePadding), y: startY,
+            radius: triangleSize,
             sides: 3,
             rotate: 180 + 90,
             click: function(layer) {
@@ -809,7 +935,7 @@ $( document ).ready(function() {
         groupName = "order_card_" + p.toString();
         max = jsonOrder.length -1;
         newOrder.setItem('layerText01',      jsonOrder[p].details);
-        //newOrder.setItem('imageSrc',         jsonOrder[p].image);
+        newOrder.setItem('imageSrc',         jsonOrder[p].image);
         newOrder.setItem('layerText02',      jsonOrder[p].orderName);
         newOrder.setItem('position',         p);
         newOrder.setItem('drawLeftArrow',     false); // since can have multiple parents
@@ -834,8 +960,8 @@ $( document ).ready(function() {
         newCard.setItem('layerText01',        jsonInsect[i].cardId.toString());
         newCard.setItem('layerText02',        jsonInsect[i].choiceOneText);
         newCard.setItem('layerText03',        jsonInsect[i].choiceTwoText);
-        //newCard.setItem('imageSrcChoiceOne'.  json[i].choiceOneImage);
-        //newCard.setItem('imageSrcChoiceTwo'.  json[i].choiceTwoImage);
+        newCard.setItem('imageSrcChoiceOne',  jsonInsect[i].choiceOneImage);
+        newCard.setItem('imageSrcChoiceTwo',  jsonInsect[i].choiceTwoImage);
         newCard.setItem('choiceOneChild',     jsonInsect[i].choiceOneChild.toString());
         newCard.setItem('choiceTwoChild',     jsonInsect[i].choiceTwoChild.toString());
         newCard.setItem('cardId',             jsonInsect[i].cardId.toString());
@@ -856,10 +982,18 @@ $( document ).ready(function() {
       
 
       find_master_cards(jsonInsect);
-    
+
+      console.log('canvas height: ' + canvas.height().toString());
+      console.log('canvas width: ' + canvas.width().toString());
+      doc = $(document);
+      console.log('document height: ' + doc.height().toString());
+      console.log('document width: ' + doc.width().toString());
+      
       create_layers_from_json_insect(0);
-      canvas.drawLayers();
+      pre_draw();
       lays = canvas.getLayers();
+      
+      
       
 
       
