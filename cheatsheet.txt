@@ -20,3 +20,14 @@ var cardTemplate = new HashTable({
                       imageSrcChoiceOne:  'bedbug_small.png',
                       imageSrcChoiceTwo:  'bedbug_small.png',
 });
+
+canvas.drawRect({
+      layer: true,
+      index: 2,
+      name: buttonName,
+      strokeStyle: '#00cc00',
+      strokeWidth: 2,
+      fillStyle: '#FF0000',
+      x: buttonX, y: buttonY,
+      width: buttonw , height: buttonh,
+      cornerRadius: 10,
