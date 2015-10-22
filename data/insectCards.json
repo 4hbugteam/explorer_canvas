@@ -8,87 +8,87 @@
 		"choiceOneImage" : "img/withwings.jpg",
 		"choiceTwoText" : "Insect without wings ",
 		"choiceTwoChild" : 26,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/withoutwings.jpg"
     },
     {
         "cardType": "couplet",
 		"cardId" : 2,
 		"choiceOneText" : "Front wings hardened, leathery, or parchmentlike, at least at the base",
 		"choiceOneChild" : 3,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/wings-leathery.jpg",
 		"choiceTwoText" : "Front wings membranous ",
 		"choiceTwoChild" : 8,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/wings-membranous.jpg"
     },	
     {
         "cardType": "couplet",
 		"cardId" : 3,
 		"choiceOneText" : "chewing mouthparts",
 		"choiceOneChild" : 4,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/mouthparts-chewing.jpg",
 		"choiceTwoText" : "sucking mouthparts",
 		"choiceTwoChild" : 5,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/mouthparts-sucking.jpg"
     },	    
     {
         "cardType": "couplet",
 		"cardId" : 4,
 		"choiceOneText" : "without pincer-like cerci",
 		"choiceOneChild" : 6,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/cerci-not-pincer.jpg",
 		"choiceTwoText" : "with pincer-like cerci",
 		"choiceTwoChild" : "dermaptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/cerci-pincer-like.gif"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 5,
 		"choiceOneText" : "front wings leathery at base and membranous at end",
 		"choiceOneChild" : "hemiptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/base-leathery.jpg",
 		"choiceTwoText" : "Front wings uniform texture",
 		"choiceTwoChild" : "homoptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/uniform-texture.jpg"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 6,
 		"choiceOneText" : "front wings with branched veins",
 		"choiceOneChild" : 7,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/frontwings-veins.png",
 		"choiceTwoText" : "front wings hard, without veins",
 		"choiceTwoChild" : "coleoptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/frontwings-hard.jpg"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 7,
 		"choiceOneText" : "Jumping insects: Hind femur enlarged, tarsi with four or fewer segments ",
 		"choiceOneChild" : "orthoptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/jumping-insects.jpg",
 		"choiceTwoText" : "walking insects: Hind femur not enlarged, tarsi with five segments ",
 		"choiceTwoChild" : "dictyoptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/walking-insect.JPG"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 8,
 		"choiceOneText" : "Two wings",
 		"choiceOneChild" : 9,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/wings-two.jpg",
 		"choiceTwoText" : "four wings",
 		"choiceTwoChild" : 10,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/wings-four.jpg"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 9,
 		"choiceOneText" : "pronotum extended over abdomen",
 		"choiceOneChild" : "orthoptera",
-		"choiceOneImage" : "img/bedbug_small.png",
-		"choiceTwoText" : "pronotum extended over abdomen",
+		"choiceOneImage" : "img/pronotum-extended.JPG",
+		"choiceTwoText" : "pronotum not extended over abdomen",
 		"choiceTwoChild" : 12,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/no-pronotal.JPG"
     },		
     {
         "cardType": "couplet",
@@ -115,30 +115,30 @@
 		"cardId" : 12,
 		"choiceOneText" : "end of abdomen without noticable appendages",
 		"choiceOneChild" : 13,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/abdomen-none.jpg",
 		"choiceTwoText" : "end of abdomen with style or thread-like tail",
 		"choiceTwoChild" : 14,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/abdomen-threadlike.jpg"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 13,
 		"choiceOneText" : "haltere-like organs infront of wings",
 		"choiceOneChild" : "coleoptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/haltere-front.JPG",
 		"choiceTwoText" : "halteres behind wings",
 		"choiceTwoChild" : "diptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/haltere-behind.JPG"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 14,
 		"choiceOneText" : "style-like tail",
 		"choiceOneChild" : "homoptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/style.JPG",
 		"choiceTwoText" : "two or three thread-like tails",
 		"choiceTwoChild" : "ephemeroptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/thread-like-tail.jpg"
     },		
     {
         "cardType": "couplet",
@@ -255,20 +255,20 @@
 		"cardId" : 26,
 		"choiceOneText" : "antennae present",
 		"choiceOneChild" : 29,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/antennae-present.jpg",
 		"choiceTwoText" : "antennae absent",
 		"choiceTwoChild" : 27,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/antennae-absent.jpg"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 27,
 		"choiceOneText" : "legs present",
 		"choiceOneChild" : "diptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/withlegs.jpg",
 		"choiceTwoText" : "legs absent",
 		"choiceTwoChild" : 28,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/nolegs.jpg"
     },		
     {
         "cardType": "couplet",
@@ -283,9 +283,9 @@
     {
         "cardType": "couplet",
 		"cardId" : 29,
-		"choiceOneText" : " collphore present, spring-like organ usually present",
+		"choiceOneText" : " collophore present, spring-like organ usually present",
 		"choiceOneChild" : "collembola",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/collophore-present.JPG",
 		"choiceTwoText" : "both collophore and spring-like organ absent",
 		"choiceTwoChild" : 30,
 		"choiceTwoImage" : "img/bedbug_small.png"
@@ -385,7 +385,7 @@
 		"cardId" : 39,
 		"choiceOneText" : "body covered with scales",
 		"choiceOneChild" : "lepidoptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/covered-with-scales-wingless.jpg",
 		"choiceTwoText" : "body not covered with scales",
 		"choiceTwoChild" : 40,
 		"choiceTwoImage" : "img/bedbug_small.png"

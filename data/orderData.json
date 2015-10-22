@@ -15,8 +15,8 @@
     {
         "cardType": "endpoint",
 		"orderName" : "collembola",
-		"details" : "Insect with wings",
-		"image" : "img/placeholder.png"
+		"details" : "Members of Collembola are normally less than 6 mm (0.24 in) long, have six or fewer abdominal segments and possess a tubular appendage (the collophore or ventral tube). Most species have an abdominal, tail-like appendage, the furcula, that is folded beneath the body to be used for jumping when the animal is threatened.",
+		"image" : "img/collembola.JPG"
     },
     {
         "cardType": "endpoint",
@@ -45,8 +45,8 @@
     {
         "cardType": "endpoint",
 		"orderName" : "hemiptera",
-		"details" : "Insect with wings",
-		"image" : "img/placeholder.png"
+		"details" : "Most people tend to call anything with lots of legs a 'bug.' However, to an entomologist, a 'bug' is one of the 35,000 or so species of the order Hemiptera. Hemiptera means 'half wing' and refers to the fact that part of the first pair of wings is toughened and hard, while the rest of the first pair and the second pair are membranous. Hemipterans also have modified piercing and sucking mouthparts; some suck plant juices and are plant pests, while others can bite painfully.",
+		"image" : "img/hemiptera.jpg"
     },
     {
         "cardType": "endpoint",
@@ -69,8 +69,8 @@
     {
         "cardType": "endpoint",
 		"orderName" : "lepidoptera",
-		"details" : "Insect with wings",
-		"image" : "img/placeholder.png"
+		"details" : "The Lepidoptera (/ˌlɛpɨˈdɒptərə/ lep-i-dop-tər-ə) is an order of insects that includes moths and butterflies. Lepidopteran species are characterized by more than three derived features, some of the most apparent being the scales covering their bodies and wings, and a proboscis. The scales are modified, flattened 'hairs', and give butterflies and moths their extraordinary variety of colors and patterns.",
+		"image" : "img/lepidoptera.jpg"
     },
     {
         "cardType": "endpoint",
@@ -105,8 +105,8 @@
     {
         "cardType": "endpoint",
 		"orderName" : "orthoptera",
-		"details" : "Insect with wings",
-		"image" : "img/placeholder.png"
+		"details" : "Grasshoppers / Locusts / Crickets / Katydids: The name Orthoptera, derived from the Greek 'ortho' meaning straight and 'ptera' meaning wing, refers to the parallel-sided structure of the front wings (tegmina).",
+		"image" : "img/orthoptera.jpg"
     },
     {
         "cardType": "endpoint",
@@ -123,8 +123,8 @@
     {
         "cardType": "endpoint",
 		"orderName" : "siphonaptera",
-		"details" : "Insect with wings",
-		"image" : "img/placeholder.png"
+		"details" : "Fleas: The name Siphonaptera is derived from the Greek words 'siphon' meaning a tube or pipe and 'aptera' meaning wingless. This is an appropriate appellation for these secondarily wingless insects whose mouthparts are adapted for piercing skin and sucking blood.",
+		"image" : "img/siphonaptera.jpg"
     },
     {
         "cardType": "endpoint",
@@ -135,8 +135,8 @@
     {
         "cardType": "endpoint",
 		"orderName" : "thysanura",
-		"details" : "Insect with wings",
-		"image" : "img/placeholder.png"
+		"details" : "Thysanura is the now deprecated name of an order of the class insecta. The current name is Zygentoma and encompasses the silverfish or fishmoths, and firebrats. Members of the order are best known for their three long caudal filaments.",
+		"image" : "img/thysanura.jpg"
     },
     {
         "cardType": "endpoint",
