@@ -257,11 +257,14 @@ $( document ).ready(function() {
           groups: ['help_window','help01'],
           fontFamily: fontFamily,
           fontSize: fontSize * 1.5,
-          fillStyle: '#000',
+          fillStyle: '#ffffff',
           maxWidth: canvas_other.width - (canvas_other.width * 0.3),
           text: ("Welcome to the Mobile Dichotomous Key. This should help you "  
                 + "identify the 'order' of various types of insects. First you "  
-                + "have to find an insect that you want to identify! "),
+                + "have to find an insect that you want to identify! \n\n"
+                + "Click the image below to make it bigger. When you're "
+                + "ready to start click the menu in the top left and select "
+                + 'Reset'),
           x: canvas_other.width / 2,
           y: canvas_other.height / 4,
         });
@@ -273,7 +276,7 @@ $( document ).ready(function() {
           source: 'img/help_01.JPG',
           scale: 0.3,
           x: canvas_other.width /2,
-          y: canvas_other.height - (canvas_other.height / 2),
+          y: canvas_other.height - (canvas_other.height / 3),
           click: function(layer) {
             imageToggled = (!imageToggled);
             var disScale = 1;
@@ -329,7 +332,6 @@ $( document ).ready(function() {
                   add_help_button();
                   menuHelpButton = canvas.getLayerGroup('menu_help_button');
                   for (r=0;r<menuResetButton.length;r++) {
-                    console.log('wtf');
                     canvas.animateLayer(menuResetButton[r].name,{},flipSpeed);
                   }
                   for (r=0;r<menuHelpButton.length;r++) {
@@ -857,7 +859,6 @@ $( document ).ready(function() {
           // had to add the count because touches were clicking like 11 times
           if (count <= 1) {
             count += 1;
-            console.log("I'm running the window.open function...");
             window.open('http://www.4-hmall.org/Catalog/SearchResults.aspx?SearchQuery=entomology','_blank');
           }
         }
