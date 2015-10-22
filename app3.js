@@ -828,7 +828,7 @@ $( document ).ready(function() {
           });
         }
         // make the reset button
-        canvas.addLayer({
+      canvas.addLayer({
         type: 'polygon',
         name: 'order_reset_' + nextUID(),
         groups: [groupName],
@@ -841,6 +841,25 @@ $( document ).ready(function() {
         rotate: 180 + 90,
         click: function(layer) {
           animation_click_reset(layer);
+        }
+      });
+      var count = 1;
+      canvas.addLayer({
+        type: 'image',
+        name: 'purchase',
+        shadowBlur: 15,
+        shadowColor: '#000',
+        source: 'img/purchase.jpg',
+        scale: 0.5,
+        x: canvas_other.width - 100,
+        y: canvas_other.height - 100,
+        click: function() {
+          // had to add the count because touches were clicking like 11 times
+          if (count <= 1) {
+            count += 1;
+            console.log("I'm running the window.open function...");
+            window.open('http://www.4-hmall.org/Catalog/SearchResults.aspx?SearchQuery=entomology','_blank');
+          }
         }
       });
       };

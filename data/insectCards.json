@@ -95,20 +95,20 @@
 		"cardId" : 10,
 		"choiceOneText" : "wings with few or no scales, no coiled proboscis",
 		"choiceOneChild" : 11,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/no-coil.JPG",
 		"choiceTwoText" : "wings covered with scales, moutparts consist of coiled probiscis",
 		"choiceTwoChild" : "lepidoptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/scaly-wing.jpg"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 11,
 		"choiceOneText" : "very slender wing with fringe of hairs as long as the wing is wide",
 		"choiceOneChild" : "thysanoptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/hairy-wing.jpg",
 		"choiceTwoText" : "no fringe of hairs, or if fringe is present, hairs not as long as the wing is wide",
 		"choiceTwoChild" : 15,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/no-hairs.JPG"
     },		
     {
         "cardType": "couplet",
@@ -145,50 +145,50 @@
 		"cardId" : 15,
 		"choiceOneText" : "hind wings equal to or larger than front wings ",
 		"choiceOneChild" : 20,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/equal-wings.jpg",
 		"choiceTwoText" : "hind wings smaller than front wings",
 		"choiceTwoChild" : 16,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/wings-back-smaller.JPG"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 16,
 		"choiceOneText" : "no long abdominal appendages",
 		"choiceOneChild" : 17,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/no-long-appendages.jpg",
 		"choiceTwoText" : "abdomen with two or three thread-like tails",
 		"choiceTwoChild" : "ephemeroptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/abdomen-threadlike.jpg"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 17,
 		"choiceOneText" : "tarsi two or three-segmented",
 		"choiceOneChild" : 18,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/tarsi-two-or-three.JPG",
 		"choiceTwoText" : "tarsi with more than three segments (usually 5)",
 		"choiceTwoChild" : 19,
-		"choiceTwoImage" : "img/bedbug_small.png"		
+		"choiceTwoImage" : "img/tarsi-five.JPG"		
     },		
     {
         "cardType": "couplet",
 		"cardId" : 18,
 		"choiceOneText" : "piercing-sucking mouthparts",
 		"choiceOneChild" : "homoptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/mouthparts-sucking.jpg",
 		"choiceTwoText" : "chewing mouthparts",
 		"choiceTwoChild" : "psocoptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/mouthparts-chewing.jpg"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 19,
 		"choiceOneText" : "antennae shorter than body. no noticable scales",
 		"choiceOneChild" : "hymenoptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/shorter-than-body.JPG",
 		"choiceTwoText" : " antennae as long as body, wings and body often with scales",
 		"choiceTwoChild" : "trichoptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/longer-than-body.gif"
     },		
     {
         "cardType": "couplet",
@@ -198,7 +198,7 @@
 		"choiceOneImage" : "img/bedbug_small.png",
 		"choiceTwoText" : "mouthparts at end of beak-like structure some distance from eye",
 		"choiceTwoChild" : "mecoptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/mouthparts-distance.JPG"
     },		
     {
         "cardType": "couplet",
@@ -355,10 +355,10 @@
 		"cardId" : 36,
 		"choiceOneText" : "tiny insects, tarsi with two or three segments",
 		"choiceOneChild" : "psocoptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/tarsi-two-or-three.JPG",
 		"choiceTwoText" : "large insects, tarsi with 5 segments",
 		"choiceTwoChild" : "dictyoptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/tarsi-five.JPG"
     },		
     {
         "cardType": "couplet",
@@ -398,17 +398,17 @@
 		"choiceOneImage" : "img/bedbug_small.png",
 		"choiceTwoText" : "tarsal claws present",
 		"choiceTwoChild" : 41,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/tarsal-claws.JPG"
     },		
     {
         "cardType": "couplet",
 		"cardId" : 41,
 		"choiceOneText" : "piercing-sucking mouthparts",
 		"choiceOneChild" : 42,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/mouthparts-sucking.jpg",
 		"choiceTwoText" : "chewing mouthparts",
 		"choiceTwoChild" : 44,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/mouthparts-chewing.jpg"
     },		
     {
         "cardType": "couplet",
@@ -418,7 +418,7 @@
 		"choiceOneImage" : "img/bedbug_small.png",
 		"choiceTwoText" : "cornicles usually present",
 		"choiceTwoChild" : "homoptera",
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/cornicles.jpg"
     },		
     {
         "cardType": "couplet",
@@ -445,7 +445,7 @@
 		"cardId" : 45,
 		"choiceOneText" : "mouthparts at end of beak-like structure some distance from eye",
 		"choiceOneChild" : "mecoptera",
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/mouthparts-distance.JPG",
 		"choiceTwoText" : "mouthparts not elongated, close to eyes",
 		"choiceTwoChild" : 46,
 		"choiceTwoImage" : "img/bedbug_small.png"
@@ -455,10 +455,10 @@
 		"cardId" : 46,
 		"choiceOneText" : "cerci present",
 		"choiceOneChild" : 48,
-		"choiceOneImage" : "img/bedbug_small.png",
+		"choiceOneImage" : "img/cerci-pincer-like.gif",
 		"choiceTwoText" : "cerci absent",
 		"choiceTwoChild" : 47,
-		"choiceTwoImage" : "img/bedbug_small.png"
+		"choiceTwoImage" : "img/abdomen-none.jpg"
     },		
     {
         "cardType": "couplet",
