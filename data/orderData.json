@@ -3,151 +3,145 @@
     {
         "cardType": "endpoint",
 		"orderName" : "anoplura",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Sucking lice have around 500 species and represent the smaller of the two traditional suborders of lice. As opposed to the paraphyletic chewing lice, which are now divided among three suborders, the sucking lice are monophyletic.",
+		"image" : "img/anoplura.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "coleoptera",
 		"details" : "Beetles are a group of insects that form the order Coleoptera /koʊliːˈɒptərə/. The word 'coleoptera' is from the Greek κολεός, koleos, meaning 'sheath'; and πτερόν, pteron, meaning 'wing', thus 'sheathed wing', because most beetles have two pairs of wings, the front pair, the 'elytra', being hardened and thickened into a shell-like protection for the rear pair and the beetle's abdomen.",
-		"image" : "coleoptera.jpg"
+		"image" : "img/coleoptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "collembola",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Members of Collembola are normally less than 6 mm (0.24 in) long, have six or fewer abdominal segments and possess a tubular appendage (the collophore or ventral tube). Most species have an abdominal, tail-like appendage, the furcula, that is folded beneath the body to be used for jumping when the animal is threatened.",
+		"image" : "img/collembola.JPG"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "dermaptera",
 		"details" : "Earwigs make up the insect order Dermaptera and are found throughout the Americas, Africa, Eurasia, Australia and New Zealand. With about 2,000 species[1] in 12 families, they are one of the smaller insect orders. Earwigs have characteristic cerci, a pair of forceps pincers on their abdomen, and membranous wings folded underneath short forewings, hence the scientific order name, 'skin wings.' Some groups are tiny parasites on mammals and lack the typical pincers. Earwigs rarely use their flying ability.",
-		"image" : "dermaptera.jpg"
+		"image" : "img/dermaptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "dictyoptera",
 		"details" : "(from Ancient Greek diktuon 'net' + pteron 'wing') is an insect superorder that includes two orders of polyneopterous insects - the termites and cockroaches (both order: Blattodea[1]) along with the mantids (order: Mantodea)",
-		"image" : "dictyoptera.jpg"
+		"image" : "img/dictyoptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "diptera",
 		"details" : "True flies are insects of the order Diptera (from the Greek di = two, and ptera = wings). The most obvious distinction from other orders of insects is that a typical fly possesses a pair of flight wings on the mesothorax and a pair of halteres, derived from the hind wings, on the metathorax. ",
-		"image" : "diptera.jpg"
+		"image" : "img/diptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "ephemeroptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Mayflies or shadflies are aquatic insects belonging to the order Ephemeroptera. This order is part of an ancient group of insects termed the Palaeoptera, which also contains dragonflies and damselflies.",
+		"image" : "img/ephemeroptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "hemiptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Most people tend to call anything with lots of legs a 'bug.' However, to an entomologist, a 'bug' is one of the 35,000 or so species of the order Hemiptera. Hemiptera means 'half wing' and refers to the fact that part of the first pair of wings is toughened and hard, while the rest of the first pair and the second pair are membranous. Hemipterans also have modified piercing and sucking mouthparts; some suck plant juices and are plant pests, while others can bite painfully.",
+		"image" : "img/hemiptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "homoptera",
 		"details" : "Homoptera is a suborder of order Hemiptera and is now considered obsolete. It was split up into three orders including Sternorrhyncha. The Sternorrhyncha suborder of the Hemiptera contains the aphids, whiteflies, and scale insects, groups which were traditionally included in the order Homoptera. 'Sternorrhyncha' refers to the rearward position of the mouthparts relative to the head.",
-		"image" : "homoptera.jpg"
+		"image" : "img/homoptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "hymenoptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Ants / Wasps / Bees / Sawflies / Horntails: The name Hymenoptera is derived from the Greek words 'hymen' meaning membrane and 'ptera' meaning wings. It is also a reference to Hymeno, the Greek god of marriage.   The name is appropriate not only for the membranous nature of the wings, but also for the manner in which they are 'joined together as one' by the hamuli.",
+		"image" : "img/hymenoptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "isoptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "termites divide labour among castes that consist of sterile male and female 'workers' and 'soldiers'. All termite colonies have fertile males called 'kings' and one or more fertile females called 'queens'. Termites mostly feed on dead plant material and cellulose, generally in the form of wood, leaf litter, soil, or animal dung.",
+		"image" : "img/isoptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "lepidoptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "The Lepidoptera (/ˌlɛpɨˈdɒptərə/ lep-i-dop-tər-ə) is an order of insects that includes moths and butterflies. Lepidopteran species are characterized by more than three derived features, some of the most apparent being the scales covering their bodies and wings, and a proboscis. The scales are modified, flattened 'hairs', and give butterflies and moths their extraordinary variety of colors and patterns.",
+		"image" : "img/lepidoptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "mallophaga",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Mallophaga is a suborder of lice, known as chewing lice, biting lice or bird lice, containing more than 3000 species. These lice are external parasites that feed mainly on birds although some species also feed on mammals.",
+		"image" : "img/mallophaga.JPG"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "mecoptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Mecoptera are sometimes called scorpionflies after their largest family, Panorpidae, in which the males have enlarged genitals that look similar to the stinger of a scorpion. The Bittacidae, or hangingflies, are a prominent family of elongate insects known for their elaborate mating rituals, in which females choose mates based on the quality of gift prey offered by various males.",
+		"image" : "img/mecoptera.JPG"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "megaloptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "This is a very small order of Australian insects commonly known as alderflies and dobsonflies. They are medium to large sized insects with a wingspan ranging from 20 to 100 millimetres.",
+		"image" : "img/megaloptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "neuroptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "The insect order Neuroptera, or net-winged insects, includes the lacewings, mantidflies, antlions, and their relatives. The order contains about 6,000 species.",
+		"image" : "img/neuroptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "odonata",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Odonata is an order of carnivorous insects, encompassing dragonflies and damselflies. The word dragonfly is also sometimes used to refer to all Odonata, but odonate is a more correct English name for the group as a whole.",
+		"image" : "img/odonata.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "orthoptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Grasshoppers / Locusts / Crickets / Katydids: The name Orthoptera, derived from the Greek 'ortho' meaning straight and 'ptera' meaning wing, refers to the parallel-sided structure of the front wings (tegmina).",
+		"image" : "img/orthoptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "plecoptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "The Plecoptera are an order of insects, commonly known as stoneflies. Some 3,500 species are described worldwide, with new species still being discovered. Stoneflies are found worldwide, except Antarctica.",
+		"image" : "img/plecoptera.JPG"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "psocoptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Psocids / Barklice / Booklice: The name Psocoptera is derived from the Greek 'psokos' meaning rubbed or gnawed and 'ptera' meaning wings.  Loosely translated, however, the name could be taken to mean 'winged insects that gnaw'.",
+		"image" : "img/psocoptera.png"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "siphonaptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Fleas: The name Siphonaptera is derived from the Greek words 'siphon' meaning a tube or pipe and 'aptera' meaning wingless. This is an appropriate appellation for these secondarily wingless insects whose mouthparts are adapted for piercing skin and sucking blood.",
+		"image" : "img/siphonaptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "thysanoptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Thrips are minute, slender insects with fringed wings. Other common names for thrips include thunderflies, thunderbugs, storm flies, thunderblights, storm bugs, corn flies and corn lice.",
+		"image" : "img/thysanoptera.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "thysanura",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "Thysanura is the now deprecated name of an order of the class insecta. The current name is Zygentoma and encompasses the silverfish or fishmoths, and firebrats. Members of the order are best known for their three long caudal filaments.",
+		"image" : "img/thysanura.jpg"
     },
     {
         "cardType": "endpoint",
 		"orderName" : "trichoptera",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
-    },
-    {
-        "cardType": "endpoint",
-		"orderName" : "",
-		"details" : "Insect with wings",
-		"image" : "placeholder.png"
+		"details" : "The caddisflies are an order, Trichoptera, of insects with approximately 12,000 described species.[1] Also called sedge-flies or rail-flies, they are small moth-like insects having two pairs of hairy membranous wings. They are closely related to Lepidoptera (moths and butterflies) which have scales on their wings",
+		"image" : "img/trichoptera.jpg"
     }
 ]

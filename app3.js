@@ -160,8 +160,8 @@ $( document ).ready(function() {
   var canvas = $('#my_canvas');
   canvas_other.height = window.innerHeight - (window.innerHeight * 0.03);
   canvas_other.width = window.innerWidth - (window.innerWidth * 0.03);
-  //var audio = new Audio();
-  //audio.src = "audio/beep.wav";
+  var audio = new Audio();
+  audio.src = "audio/click.wav";
   
   var baseScale = canvas_other.height / 300;
   var rootX = canvas_other.width / 2;
@@ -186,7 +186,7 @@ $( document ).ready(function() {
   var fillRed = '#ffccaa';
   var cornerRadius = 15;
   var lastPosition = 0;
-  var flipSpeed = 100;
+  var flipSpeed = 300;
   var menuToggled = false;  
   
   
@@ -197,8 +197,8 @@ $( document ).ready(function() {
                         layerText02:        "This is layerText02. It can have a lot of text you know.",
                         layerText03:        "This is layerText03. It can also have a lot of text.",
                         cardIndexBase:      1,
-                        imageSrcChoiceOne:  'bedbug_small.png',
-                        imageSrcChoiceTwo:  'bedbug_small.png',
+                        imageSrcChoiceOne:  'img/bedbug_small.png',
+                        imageSrcChoiceTwo:  'img/bedbug_small.png',
                         choiceOneChild:     'choiceOneChild',
                         choiceTwoChild:     'choiceTwoChild',
                         position:           0,
@@ -214,7 +214,7 @@ $( document ).ready(function() {
                         layerText01:        "This is order layerText01",
                         layerText02:        "This is order layerText02",
                         cardIndexBase:      1,
-                        imageSrc:           'feelgood.png',
+                        imageSrc:           'img/feelgood.png',
                         imageScale:         1,
                         position:           0,
                         drawLeftArrow:      false,
@@ -235,11 +235,59 @@ $( document ).ready(function() {
         // this function will be run every time you 
         // want to drawLayers so we can inject things
         // like the menu.
-        console.log('Running pre_draw()....');
         draw_menus();
         canvas.drawLayers();
       };
-      
+      var launch_help_context = function() {
+        canvas.removeLayers();
+        canvas.addLayer({
+          type: 'rectangle',
+          name: 'help_rectangle',
+          groups: 'help_window',
+          fillStyle: fillGreen,
+          x: canvas_other.width / 2,
+          y: canvas_other.height / 2,
+          width: canvas_other.width - (canvas_other.width * 0.3),
+          height: canvas_other.height - (canvas_other.height * 0.1),
+          cornerRadius: cornerRadius,
+        });
+        canvas.addLayer({
+          type: 'text',
+          name: 'help_text_01',
+          groups: ['help_window','help01'],
+          fontFamily: fontFamily,
+          fontSize: fontSize * 1.5,
+          fillStyle: '#000',
+          maxWidth: canvas_other.width - (canvas_other.width * 0.3),
+          text: ("Welcome to the Mobile Dichotomous Key. This should help you "  
+                + "identify the 'order' of various types of insects. First you "  
+                + "have to find an insect that you want to identify! "),
+          x: canvas_other.width / 2,
+          y: canvas_other.height / 4,
+        });
+        var imageToggled = false;
+        canvas.addLayer({
+          type: 'image',
+          name: 'help_image_01',
+          groups: ['help_window','help01'],
+          source: 'img/help_01.JPG',
+          scale: 0.3,
+          x: canvas_other.width /2,
+          y: canvas_other.height - (canvas_other.height / 2),
+          click: function(layer) {
+            imageToggled = (!imageToggled);
+            var disScale = 1;
+            if (!imageToggled) {
+              disScale = 0.3;
+            }
+            canvas.animateLayer(layer,{
+             scale: disScale,
+            }, flipSpeed);
+          } 
+        });
+        pre_draw();
+        
+      };
       var draw_menus = function() {
         // pull height of current canvas
         var menuBoxHeight = canvas.height();
@@ -248,22 +296,53 @@ $( document ).ready(function() {
         var menuBoxOpenWidth = menuBoxClosedWidth * 4;
         var menuBoxButtonOpenPosX = menuBoxOpenWidth - (menuBoxOpenWidth * 0.57);
         var menuBoxButtonClosedPosX = menuBoxClosedWidth * 0.25;
+        var action_reset_button = function(layer) {
+          menuToggled = !menuToggled;
+          canvas.removeLayers();
+          create_layers_from_json_insect(0);
+          pre_draw();
+        };
+        // this runs when the help button is clicked
+        var action_help_button = function(layer) {
+          menuToggled = !menuToggled;
+          canvas.removeLayers();
+          launch_help_context();
+        };
         var move_menu_button = function(layer) {
           var box = canvas.getLayer('menu_box');
           var lines = canvas.getLayerGroup('menu_button_lines');
           var button = canvas.getLayer('menu_box_button');
+
           if (!(menuToggled)) {
             menuToggled = !menuToggled;
+            
             canvas.animateLayer(box, {
               width: menuBoxOpenWidth,  
             }, flipSpeed);
             canvas.animateLayer(button, {
               x: menuBoxButtonOpenPosX,  
-            }, flipSpeed);
+              },{
+                duration: flipSpeed,
+                complete: function() {
+                  add_reset_button();
+                  menuResetButton = canvas.getLayerGroup('menu_reset_button');
+                  add_help_button();
+                  menuHelpButton = canvas.getLayerGroup('menu_help_button');
+                  for (r=0;r<menuResetButton.length;r++) {
+                    console.log('wtf');
+                    canvas.animateLayer(menuResetButton[r].name,{},flipSpeed);
+                  }
+                  for (r=0;r<menuHelpButton.length;r++) {
+                    canvas.animateLayer(menuHelpButton[r].name,{},flipSpeed);  
+                  }
+                }
+              }
+            );
             canvas.animateLayerGroup(lines, {
               x1: menuBoxButtonOpenPosX + (menuBoxWidth * 0.08 * 0.4),
               x2: menuBoxButtonOpenPosX - (menuBoxWidth * 0.08 * 0.4),
             }, flipSpeed);
+            
             
           } else {
             menuToggled = !menuToggled;
@@ -277,7 +356,8 @@ $( document ).ready(function() {
               x1: menuBoxButtonClosedPosX + (menuBoxWidth * 0.08 * 0.4),
               x2: menuBoxButtonClosedPosX - (menuBoxWidth * 0.08 * 0.4),
             }, flipSpeed);
-            
+            canvas.removeLayerGroup('menu_reset_button');
+            canvas.removeLayerGroup('menu_help_button');
           }
         };
         var draw_menu_lines = function(startX) {
@@ -294,7 +374,7 @@ $( document ).ready(function() {
             canvas.drawLine({
               layer: true,
               name: 'menu_box_button_line_' + g.toString(),
-              groups: ['menu_button_lines'],
+              groups: ['menu_button_lines','menu'],
               strokeStyle: '#000',
               x1: menuBoxLinesPosX1,
               x2: menuBoxLinesPosX2,
@@ -307,12 +387,74 @@ $( document ).ready(function() {
               move_menu_button(layer);
             }
           });
+          
+        };
+        var add_reset_button = function() {
+          canvas.addLayer({
+            type: 'rectangle',
+            name: 'menu_reset_button_rect',
+            groups: ['menu_reset_button'],
+            strokeStyle: '#000000',
+            fillStyle: '#ccaabb',
+            cornerRadius: cornerRadius /4,
+            x: 0 + (menuBoxClosedWidth),
+            y: (menuBoxHeight / 2) - (menuBoxHeight / 3),
+            width: menuBoxClosedWidth * 1.2,
+            height: menuBoxHeight * 0.1,
+          });
+          canvas.addLayer({
+            type: 'text',
+            name: 'menu_reset_button_text',
+            fillStyle: '#000',
+            fontFamily: fontFamily,
+            fontSize: fontSize,
+            groups: ['menu_reset_button'],
+            text: 'Reset',
+            x: 0 + (menuBoxClosedWidth),
+            y: (menuBoxHeight / 2) - (menuBoxHeight / 3),
+          });
+          canvas.setLayerGroup('menu_reset_button', {
+            click: function(layer) {
+              action_reset_button(layer);
+            }
+          });
 
+        };
+        var add_help_button = function() {
+          canvas.addLayer({
+            type: 'rectangle',
+            name: 'menu_help_button_rect',
+            groups: ['menu_help_button'],
+            strokeStyle: '#000000',
+            fillStyle: '#ccaabb',
+            cornerRadius: cornerRadius /4,
+            x: 0 + (menuBoxClosedWidth),
+            y: (menuBoxHeight / 2) - (menuBoxHeight / 4.5),
+            width: menuBoxClosedWidth * 1.2,
+            height: menuBoxHeight * 0.1,
+          });
+          canvas.addLayer({
+            type: 'text',
+            name: 'menu_help_button_text',
+            fillStyle: '#000',
+            fontFamily: fontFamily,
+            fontSize: fontSize,
+            groups: ['menu_help_button'],
+            text: 'Help',
+            x: 0 + (menuBoxClosedWidth),
+            y: (menuBoxHeight / 2) - (menuBoxHeight / 4.5),
+          });
+          canvas.setLayerGroup('menu_help_button', {
+            click: function(layer) {
+              action_help_button(layer);
+            }
+          });
         };
         canvas.drawRect({
           layer: true,
           name: 'menu_box',
           fillStyle: fillRed,
+          groups: ['menu'],
           width: menuBoxClosedWidth,
           height: menuBoxHeight,
           x: 0, y: menuBoxHeight / 2,
@@ -323,6 +465,7 @@ $( document ).ready(function() {
           layer: true,
           name: 'menu_box_button',
           opacity: 0.02,
+          groups: ['menu'],
           strokeStyle: '#000000',
           transparent: true,
           width: menuBoxWidth * 0.08,
@@ -333,12 +476,13 @@ $( document ).ready(function() {
           click: function(layer) {
             move_menu_button(layer);
           }
-          
         });
         draw_menu_lines(menuBoxButtonClosedPosX);
       };
       
       var animation_click_image = function(layer) {
+        audio.play();
+        // grab the only layergroup on the canvas
         g = canvas.getLayerGroup(layer.groups[1]);
         var layerImage;
         var layerText;
@@ -356,16 +500,22 @@ $( document ).ready(function() {
               layersToHide.push(allLayers[u]);
             }
           }
-          for (j=0;j<layersToHide.length;j++) {
-            canvas.animateLayer(layersToHide[j], {
-              visible: visibleBool,
-            },flipSpeed);
-          } 
 
+          for (j=0;j<layersToHide.length;j++) {
+            // first check to make sure we're not hiding menus
+            if (layersToHide[j].name.indexOf('menu') === -1) {
+              canvas.animateLayer(layersToHide[j], {
+                visible: visibleBool,
+              },0);
+            } 
+          }
         };
         
+        // save all of the current visible layers that we want to keep and 
+        // animate
         for (f=0;f<g.length;f++) {
           lName = g[f].name;
+          // use javascript's messed up implementation of 'if string is in other string'
           if (lName.indexOf('image') > -1) {
             layerNames.push(g[f].name);
             layerImage = g[f];
@@ -375,10 +525,10 @@ $( document ).ready(function() {
           } else if (lName.indexOf('rectangle') > -1) {
             layerNames.push(g[f].name);
             layerRect = g[f];
-          }
+          } 
         }
         
-        // set all but the pop up layers invisible then callback
+        // set all but the pop up layers invisible then continue
         set_invisible_all_but(layerNames,false);
         
         canvas.animateLayer(layerImage, {
@@ -413,7 +563,6 @@ $( document ).ready(function() {
           cornerRadius: 10,
           click: function(layer) {
             indexToDraw = layerRect.data.position;
-            console.log("Removing all layers..");
             canvas.removeLayers();
             create_layers_from_json_insect(indexToDraw);
             pre_draw();
@@ -493,6 +642,7 @@ $( document ).ready(function() {
       
       var animation_click_arrow_right = function(layer) {
         // first we have to create the next layer
+        audio.play();
         var pos = canvas.getLayer(layer).data.jump;
         var myPos = canvas.getLayer(layer).data.position;
         var isEndpoint = false;
@@ -512,7 +662,6 @@ $( document ).ready(function() {
           }, flipSpeed,
           function() {
             // wait for finish then clear canvas
-            console.log("Removing all layers..");
             canvas.removeLayers();            
             // create the next layer
             if (isEndpoint) {
@@ -528,6 +677,7 @@ $( document ).ready(function() {
       };
       
       var animation_click_arrow_left = function(layer) {
+        audio.play();
         // first we have to create the next layer
         var pos = canvas.getLayer(layer).data.jump;
         var myPos = canvas.getLayer(layer).data.position;
@@ -546,7 +696,6 @@ $( document ).ready(function() {
           }, flipSpeed,
           function() {
             // wait for finish then clear canvas
-            console.log("Removing all layers..");
             canvas.removeLayers();            
             // create the next layer
             if (isEndpoint) {
@@ -559,6 +708,7 @@ $( document ).ready(function() {
           }) ;
       };
       var animation_click_reset = function(layer) {
+        audio.play();
         // pull the current layer group
         group = canvas.getLayerGroup(layer.groups[0]);
         // now move the whole group
@@ -568,7 +718,6 @@ $( document ).ready(function() {
           }, flipSpeed,
           function() {
             // wait for finish then clear canvas
-            console.log("Removing all layers..");
             canvas.removeLayers();            
             // create the next layer
             create_layers_from_json_insect(0);
@@ -608,6 +757,8 @@ $( document ).ready(function() {
           fillStyle: fillOrange,
           strokeStyle: strokeStyle,
           strokeWidth: strokeWidth,
+          shadowBlur: 10,
+          shadowColor: '#000',
           x: startX, y: startY,
           width: cardWidth, height: cardHeight,
           cornerRadius: cornerRadius,
@@ -620,7 +771,7 @@ $( document ).ready(function() {
           fillStyle: fillStyle,
           strokeStyle: strokeStyle,
           strokeWidth: strokeWidth,
-          x: startX, y: startY - (cardHeight / 3),
+          x: startX, y: startY - (cardHeight * 0.45),
           fontSize: fontSize*2,
           fontFamily: fontFamily,
           text: layerText02,
@@ -677,7 +828,7 @@ $( document ).ready(function() {
           });
         }
         // make the reset button
-        canvas.addLayer({
+      canvas.addLayer({
         type: 'polygon',
         name: 'order_reset_' + nextUID(),
         groups: [groupName],
@@ -690,6 +841,25 @@ $( document ).ready(function() {
         rotate: 180 + 90,
         click: function(layer) {
           animation_click_reset(layer);
+        }
+      });
+      var count = 1;
+      canvas.addLayer({
+        type: 'image',
+        name: 'purchase',
+        shadowBlur: 15,
+        shadowColor: '#000',
+        source: 'img/purchase.jpg',
+        scale: 0.5,
+        x: canvas_other.width - 100,
+        y: canvas_other.height - 100,
+        click: function() {
+          // had to add the count because touches were clicking like 11 times
+          if (count <= 1) {
+            count += 1;
+            console.log("I'm running the window.open function...");
+            window.open('http://www.4-hmall.org/Catalog/SearchResults.aspx?SearchQuery=entomology','_blank');
+          }
         }
       });
       };
@@ -731,6 +901,8 @@ $( document ).ready(function() {
           fillStyle: fillGreen,
           strokeStyle: strokeStyle,
           strokeWidth: strokeWidth,
+          shadowBlur: 10,
+          shadowColor: '#000',
           x: startX, y: startY,
           width: cardWidth, height: cardHeight,
           cornerRadius: cornerRadius,
@@ -746,6 +918,8 @@ $( document ).ready(function() {
           fillStyle: fillStyle,
           strokeStyle: strokeStyle,
           strokeWidth: strokeWidth,
+          shadowBlur: 10,
+          shadowColor: '#000',
           x: startX, y: startY,
           fontSize: fontSize,
           fontFamily: fontFamily,
@@ -765,6 +939,8 @@ $( document ).ready(function() {
           fillStyle: fillBlue,
           strokeStyle: strokeStyle,
           strokeWidth: strokeWidth,
+          shadowBlur: 10,
+          shadowColor: '#000',
           x: startX, y: startY - (cardHeight /4),
           width: cardWidth - (cardWidth * 0.1), 
           height: cardHeight - (cardHeight * 0.6),
