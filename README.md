@@ -44,4 +44,4 @@ docker run -p 8080:80 explorer
 
 Then navigate to http://localhost:8080 in a browser. 
 
-![]("./img/explorer.png")
+![](./img/explorer.png)
