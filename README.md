@@ -30,3 +30,18 @@ The HTML simply contains a definition for a canvas element in which the JavaScri
 
 The JavaScript starts off by drawing a 'couplet' card from the first element in the JSON which pulls in the associated images as needed. When the 'next' button is clicked for option one or option two of the couplet card, the JavaScript looks in the JSON for the child element and then draws the next couplet card. 
 
+## How to Run
+Build the docker container
+
+```
+docker build . -t explorer
+```
+
+Then run it
+```
+docker run -p 8080:80 explorer
+```
+
+Then navigate to http://localhost:8080 in a browser. 
+
+![]("./img/explorer.png")
