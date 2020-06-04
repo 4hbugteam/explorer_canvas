@@ -175,7 +175,7 @@ $( document ).ready(function() {
   var cardPadding = cardHeight / 8;
   var triangleSize = cardPadding * 0.4;
   var trianglePadding = cardWidth * 0.55;
-  var fontSize = cardHeight / 40 ;
+  var fontSize = cardWidth / 25 ;
   var fontFamily = 'Arial';
   var fillStyle = '#000';
   var strokeStyle = '#000';
@@ -256,12 +256,15 @@ $( document ).ready(function() {
           name: 'help_text_01',
           groups: ['help_window','help01'],
           fontFamily: fontFamily,
-          fontSize: fontSize * 1.5,
-          fillStyle: '#000',
+          fontSize: fontSize * 1.1,
+          fillStyle: '#ffffff',
           maxWidth: canvas_other.width - (canvas_other.width * 0.3),
           text: ("Welcome to the Mobile Dichotomous Key. This should help you "  
                 + "identify the 'order' of various types of insects. First you "  
-                + "have to find an insect that you want to identify! "),
+                + "have to find an insect that you want to identify! \n\n"
+                + "Click the image below to make it bigger. When you're "
+                + "ready to start click the menu in the top left and select "
+                + 'Reset'),
           x: canvas_other.width / 2,
           y: canvas_other.height / 4,
         });
@@ -273,7 +276,7 @@ $( document ).ready(function() {
           source: 'img/help_01.JPG',
           scale: 0.3,
           x: canvas_other.width /2,
-          y: canvas_other.height - (canvas_other.height / 2),
+          y: canvas_other.height - (canvas_other.height / 3),
           click: function(layer) {
             imageToggled = (!imageToggled);
             var disScale = 1;
@@ -329,7 +332,6 @@ $( document ).ready(function() {
                   add_help_button();
                   menuHelpButton = canvas.getLayerGroup('menu_help_button');
                   for (r=0;r<menuResetButton.length;r++) {
-                    console.log('wtf');
                     canvas.animateLayer(menuResetButton[r].name,{},flipSpeed);
                   }
                   for (r=0;r<menuHelpButton.length;r++) {
@@ -772,7 +774,7 @@ $( document ).ready(function() {
           strokeStyle: strokeStyle,
           strokeWidth: strokeWidth,
           x: startX, y: startY - (cardHeight * 0.45),
-          fontSize: fontSize*2,
+          fontSize: fontSize*1.5,
           fontFamily: fontFamily,
           text: layerText02,
           maxWidth: cardWidth,
@@ -786,7 +788,7 @@ $( document ).ready(function() {
           strokeStyle: strokeStyle,
           strokeWidth: strokeWidth,
           x: startX, y: startY - (cardHeight / 5),
-          fontSize: fontSize,
+          fontSize: fontSize * 0.75,
           fontFamily: fontFamily,
           text: layerText01,
           maxWidth: cardWidth,
@@ -857,7 +859,6 @@ $( document ).ready(function() {
           // had to add the count because touches were clicking like 11 times
           if (count <= 1) {
             count += 1;
-            console.log("I'm running the window.open function...");
             window.open('http://www.4-hmall.org/Catalog/SearchResults.aspx?SearchQuery=entomology','_blank');
           }
         }
@@ -982,11 +983,11 @@ $( document ).ready(function() {
           strokeStyle: strokeStyle,
           strokeWidth: strokeWidth,
           x: startX - (cardWidth * 0.2), y: startY - (cardHeight /4),
-          fontSize: fontSize,
+          fontSize: fontSize * 1.2,
           fontFamily: fontFamily,
           text: layerText02,
           align: 'left',
-          maxWidth: cardWidth - (cardWidth * 0.5),
+          maxWidth: cardWidth - (cardWidth * 0.6),
         });
         canvas.addLayer({
           type: 'text',
@@ -1000,11 +1001,11 @@ $( document ).ready(function() {
           strokeStyle: strokeStyle,
           strokeWidth: strokeWidth,
           x: startX - (cardWidth * 0.2), y: startY + (cardHeight /4),
-          fontSize: fontSize,
+          fontSize: fontSize * 1.2,
           fontFamily: fontFamily,
           text: layerText03,
           align: 'left',
-          maxWidth: cardWidth - (cardWidth * 0.5),
+          maxWidth: cardWidth - (cardWidth * 0.6),
         });
         // now create image layers for choice one and two
         canvas.addLayer({
@@ -1017,7 +1018,7 @@ $( document ).ready(function() {
           index: nextIndex(),
           source: imageSrcChoiceOne,
           x: startX + (cardWidth * 0.2), y: startY - (cardHeight / 4),
-          scale: baseScale * 0.44,
+          scale: baseScale * 0.29,
           click: function(layer) {
             animation_click_image(layer);
           }
@@ -1032,7 +1033,7 @@ $( document ).ready(function() {
           index: nextIndex(),
           source: imageSrcChoiceTwo,
           x: startX + (cardWidth * 0.2), y: startY + (cardHeight / 4),
-          scale: baseScale * 0.44,
+          scale: baseScale * 0.29,
           click: function(layer) {
             animation_click_image(layer);
           }
